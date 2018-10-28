@@ -1,12 +1,15 @@
 NAME = avm
 
-HEADERS = 	
+HEADERS =	Operand \
+			eOperandType \
+			IOperand 
 			
 INCDIR = ./includes
 SRCDIR = ./sources
 HFILES = $(patsubst %, $(INCDIR)/%.hpp, $(HEADERS))
 
-FILENAMES =	main 
+FILENAMES =	main \
+			Operand
 
 CFILES = $(patsubst %, $(SRCDIR)/%.cpp, $(FILENAMES))
 OFILES = $(patsubst %, $(ODIR)/%.o, $(FILENAMES))
