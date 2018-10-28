@@ -57,12 +57,6 @@ public:
 	{
 		return _toString;
 	}
-	bool sameType(IOperand const &ref)
-	{
-		if (this->_type ==ref.getType())
-			return true;
-		return false;
-	}
 	eOperandType getMaxType(IOperand const &ref1, IOperand const &ref2)
 	{
 		if (ref1.getPrecision() > ref2.getPrecision())

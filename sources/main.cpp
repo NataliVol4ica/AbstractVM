@@ -1,5 +1,6 @@
 
 #include "Operand.hpp"
+#include "avmFuncs.hpp"
 
 #include <stdio.h> 
 //todo: canonic form
