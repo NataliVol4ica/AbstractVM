@@ -1,6 +1,5 @@
 
-#ifndef OPERAND_HPP
-# define OPERAND_HPP
+#pragma once
 
 #include "eOperandType.hpp"
 #include "IOperand.hpp"
@@ -15,8 +14,12 @@ public:
 	//Canonical
 	Operand<T>(void): _value(0)
 	{
-		string typeName = typeid(T).name();
-		defineTType(typeName);
+		defineTType();
+		setStringValue();
+	}
+	Operand<T>(T const value): _value(value)
+	{
+		defineTType();
 		setStringValue();
 	}
 	Operand<T>(Operand<T> const &ref)
@@ -24,10 +27,9 @@ public:
 		this->_type = ref.getType();
 		this->_value = ref.getValue();
 		this->_toString = ref.toString();
-	}
+	}	
 	Operand<T> &operator=(Operand<T> const &ref)
 	{
-		this->_type = ref.getType();
 		this->_value = ref.getValue();
 		this->_toString = ref.toString();
 	}
@@ -35,7 +37,7 @@ public:
 	//getters
 	int getPrecision( void ) const
 	{
-		return sizeof(T);
+		return static_cast<int>(_type);
 	}
 	eOperandType getType(void) const
 	{
@@ -45,14 +47,32 @@ public:
 	{
 		return _value;
 	}
-	//tostring
+	//operators
+	IOperand const * operator+( IOperand const & rhs ) const
+	{
+		Operand<T> = 
+	}
+	//tools
 	string const & toString( void ) const
 	{
 		return _toString;
 	}
-private:
-	void defineTType(string typeName)
+	bool sameType(IOperand const &ref)
 	{
+		if (this->_type ==ref.getType())
+			return true;
+		return false;
+	}
+	eOperandType getMaxType(IOperand const &ref1, IOperand const &ref2)
+	{
+		if (ref1.getPrecision() > ref2.getPrecision())
+			return ref1.getType();
+		return ref2.getType();
+	}
+private:
+	void defineTType(void)
+	{
+		string typeName = typeid(T).name();
 		if (typeName == "c")
 			_type = Int8;
 		else if (typeName == "s")
@@ -73,5 +93,3 @@ private:
 	T				_value;
 	string			_toString;
 };
-
-#endif

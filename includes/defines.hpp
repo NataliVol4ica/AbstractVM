@@ -1,6 +1,5 @@
 
-#ifndef DEFINES_H
-# define DEFINES_H
+#pragma once
 
 #include <iostream>
 #include <iomanip>
@@ -18,5 +17,3 @@ typedef struct	s_data
 	string	paramname;
 	int		value;
 }				t_data;
-
-#endif

@@ -1,6 +1,5 @@
 
-#ifndef EOPERANDTYPE_HPP
-# define EOPERANDTYPE_HPP
+#pragma once
 
 enum eOperandType
 {
@@ -10,5 +9,3 @@ enum eOperandType
 	Float,
 	Double
 };
-
-#endif
