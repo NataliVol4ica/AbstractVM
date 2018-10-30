@@ -4,24 +4,6 @@
 #include "avmFuncs.hpp"
 #include "defines.hpp"
 
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   OperandFactory.hpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vpopovyc <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/01 18:13:37 by vpopovyc          #+#    #+#             */
-/*   Updated: 2018/05/01 18:13:38 by vpopovyc         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#pragma once
-
-#include <Operand.hpp>
-#include <vector>
-#include <iostream>
-
 IOperand const * createOperand(eOperandType type, std::string const & value )
 {
 	if (type == Int8)
