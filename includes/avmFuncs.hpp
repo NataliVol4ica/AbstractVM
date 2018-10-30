@@ -3,5 +3,6 @@
 
 #include "eOperandType.hpp"
 #include "defines.hpp"
+#include "IOperand.hpp"
 
-IOperand const * createOperand(eOperandType type, string const & value ) const;
+IOperand const * createOperand(eOperandType type, std::string const & value );

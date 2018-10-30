@@ -4,6 +4,8 @@
 #include "eOperandType.hpp"
 #include "IOperand.hpp"
 #include "defines.hpp"
+#include <iostream>
+#include <string>
 
 //todo: tons of exceptions
 
@@ -48,12 +50,12 @@ public:
 		return _value;
 	}
 	//operators
-	IOperand const * operator+( IOperand const & rhs ) const
+	/*IOperand const * operator+( IOperand const & rhs ) const
 	{
-		Operand<T> = 
-	}
+		//Operand<T> = 
+	}*/
 	//tools
-	string const & toString( void ) const
+	std::string const & toString( void ) const
 	{
 		return _toString;
 	}
@@ -66,7 +68,7 @@ public:
 private:
 	void defineTType(void)
 	{
-		string typeName = typeid(T).name();
+		std::string typeName = typeid(T).name();
 		if (typeName == "c")
 			_type = Int8;
 		else if (typeName == "s")
@@ -85,5 +87,5 @@ private:
 
 	eOperandType	_type;
 	T				_value;
-	string			_toString;
+	std::string		_toString;
 };
