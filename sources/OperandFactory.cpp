@@ -21,16 +21,6 @@ OperandFactory::~OperandFactory() {}
 IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value) const
 {
 	return (this->*createFuncs[type])(value);
-	/*if (type == Int8)
-		return (new Operand<char>());
-	if (type == Int16)
-		return (new Operand<short>(static_cast<short>(stoi(value))));
-	if (type == Int32)
-		return (new Operand<int>(stoi(value)));
-	if (type == Float)
-		return (new Operand<float>(stof(value)));
-	if (type == Double)
-		return (new Operand<double>(stod(value)));*/
 }
 
 IOperand const * OperandFactory::createInt8(std::string const & value) const
@@ -85,7 +75,7 @@ IOperand const * OperandFactory::createInt32(std::string const & value) const
 
 IOperand const * OperandFactory::createFloat(std::string const & value) const
 {
-	int stofVal;
+	float stofVal;
 	try
 	{
 		stofVal = stof(value);
@@ -101,7 +91,7 @@ IOperand const * OperandFactory::createFloat(std::string const & value) const
 
 IOperand const * OperandFactory::createDouble(std::string const & value) const
 {
-	int stodVal;
+	double stodVal;
 	try
 	{
 		stodVal = stod(value);
