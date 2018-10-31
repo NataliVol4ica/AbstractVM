@@ -31,14 +31,17 @@ IOperand const * OperandFactory::createInt8(std::string const & value) const
 	{
 		stoiVal = stoi(value);
 		if (stoiVal > INT8_MAX || stoiVal < INT8_MIN)
-			throw;
+			throw OutOfRangeException(value, Int8);
 		return new Operand<char>(static_cast<char>(stoiVal));
 	}
 	catch (const std::out_of_range&)
 	{
 		throw OutOfRangeException(value, Int8);
 	}
-	//todo: catch invalid argument exc
+	catch (const std::invalid_argument&)
+	{
+		throw InvalidArgumentException(value, Double);
+	}
 }
 
 IOperand const * OperandFactory::createInt16(std::string const & value) const
@@ -48,14 +51,17 @@ IOperand const * OperandFactory::createInt16(std::string const & value) const
 	{
 		stoiVal = stoi(value);
 		if (stoiVal > INT16_MAX || stoiVal < INT16_MIN)
-			throw;
+			throw OutOfRangeException(value, Int16);
 		return new Operand<short>(static_cast<short>(stoiVal));
 	}
 	catch (const std::out_of_range&)
 	{
 		throw OutOfRangeException(value, Int16);
 	}
-	//todo: catch invalid argument exc
+	catch (const std::invalid_argument&)
+	{
+		throw InvalidArgumentException(value, Double);
+	}
 }
 
 IOperand const * OperandFactory::createInt32(std::string const & value) const
@@ -70,7 +76,10 @@ IOperand const * OperandFactory::createInt32(std::string const & value) const
 	{
 		throw OutOfRangeException(value, Int32);
 	}
-	//todo: catch invalid argument exc
+	catch (const std::invalid_argument&)
+	{
+		throw InvalidArgumentException(value, Double);
+	}
 }
 
 IOperand const * OperandFactory::createFloat(std::string const & value) const
@@ -85,7 +94,10 @@ IOperand const * OperandFactory::createFloat(std::string const & value) const
 	{
 		throw OutOfRangeException(value, Float);
 	}
-	//todo: catch invalid argument exc
+	catch (const std::invalid_argument&)
+	{
+		throw InvalidArgumentException(value, Double);
+	}
 }
 
 IOperand const * OperandFactory::createDouble(std::string const & value) const
@@ -100,7 +112,10 @@ IOperand const * OperandFactory::createDouble(std::string const & value) const
 	{		
 		throw OutOfRangeException(value, Double);
 	}
-	//todo: catch invalid argument exc
+	catch (const std::invalid_argument&)
+	{
+		throw InvalidArgumentException(value, Double);
+	}
 }
 
 /* EXCEPTIONS */
@@ -124,6 +139,57 @@ OperandFactory::OutOfRangeException::~OutOfRangeException() throw() {}
 const char* OperandFactory::OutOfRangeException::what() const throw()
 {
 	std::string str = "Value " + _value + " overflows ";
+	switch (_type)
+	{
+		case Int8:
+		{
+			str += "Int8";
+			break;
+		}
+		case Int16:
+		{
+			str += "Int16";
+			break;
+		}
+		case Int32:
+		{
+			str += "Int32";
+			break;
+		}
+		case Float:
+		{
+			str += "Float";
+			break;
+		}
+		case Double:
+		{
+			str += "Double";
+			break;
+		}
+	}
+	return str.c_str();
+}
+
+// InvalidArg
+
+
+OperandFactory::InvalidArgumentException::InvalidArgumentException(){}
+OperandFactory::InvalidArgumentException::InvalidArgumentException(std::string value, eOperandType type): 
+	_value(value),
+	_type(type)
+	{
+
+	}
+OperandFactory::InvalidArgumentException::InvalidArgumentException(InvalidArgumentException const &ref){*this = ref;}
+OperandFactory::InvalidArgumentException &OperandFactory::InvalidArgumentException::operator= (InvalidArgumentException const &ref)
+{
+	exception::operator=(ref);
+	return *this;
+}
+OperandFactory::InvalidArgumentException::~InvalidArgumentException() throw() {}
+const char* OperandFactory::InvalidArgumentException::what() const throw()
+{
+	std::string str = "Value " + _value + " cannot be converted into ";
 	switch (_type)
 	{
 		case Int8:

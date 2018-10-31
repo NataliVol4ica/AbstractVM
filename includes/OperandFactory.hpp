@@ -29,6 +29,19 @@ public:
 		std::string _value;
 		eOperandType _type;
 	};
+	class InvalidArgumentException : public exception
+	{
+	public:
+		InvalidArgumentException();
+		InvalidArgumentException(std::string value, eOperandType type);
+		InvalidArgumentException(InvalidArgumentException const &ref);
+		InvalidArgumentException &operator=(InvalidArgumentException const &ref);
+		~InvalidArgumentException() throw();
+		virtual const char* what() const throw();
+	private:
+		std::string _value;
+		eOperandType _type;
+	};
 
 private:
 

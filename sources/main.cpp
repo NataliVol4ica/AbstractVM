@@ -9,12 +9,22 @@
 
 int main(void)
 {
-	int a;
-	new Operand<char>();
+	/*new Operand<char>();
 	cout << INT32_MAX << " " << FLT_MAX << " " << DBL_MAX << endl;
 	cout << INT32_MIN << " " << FLT_MIN << " " << DBL_MIN << endl;
 	cout << (INT32_MAX > DBL_MAX) << endl;
-	cout << (INT32_MIN < -DBL_MAX) << endl;
-	cin >> a;
+	cout << (INT32_MIN < -DBL_MAX) << endl;*/
+	try
+	{
+		OperandFactory of = OperandFactory();
+		const IOperand *a = of.createOperand(Int8, "127");
+		const IOperand *b = of.createOperand(Int8, "43");
+		const IOperand *c =  *a + *b;
+		cout << c->toString() << endl;
+	}
+	catch(exception &e)
+	{		
+		cout <<"Error: "<< e.what() << endl;
+	}
 	return 0;
 }
