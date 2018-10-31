@@ -50,7 +50,7 @@ public:
 	//operators
 	IOperand const * operator+( IOperand const & rhs ) const
 	{
-		Operand<T> = 
+		
 	}
 	//tools
 	string const & toString( void ) const
