@@ -12,7 +12,6 @@ SRCDIR = ./sources
 HFILES = $(patsubst %, $(INCDIR)/%.hpp, $(HEADERS))
 
 FILENAMES =	main \
-			Operand \
 			OperandFactory
 
 CFILES = $(patsubst %, $(SRCDIR)/%.cpp, $(FILENAMES))

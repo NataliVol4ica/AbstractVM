@@ -6,7 +6,7 @@
 #include <cfloat>
 #include <stdio.h> 
 //todo: canonic form
-
+//todo: log flag
 int main(void)
 {
 	/*new Operand<char>();

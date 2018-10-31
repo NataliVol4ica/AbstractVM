@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <cfloat>
+#include <cmath>
 
 //todo: tons of exceptions
 
@@ -82,6 +83,30 @@ public:
 			return OperandFactory().createOperand(maxType, std::to_string((int)c));
 		return OperandFactory().createOperand(maxType, std::to_string(c));
 	}
+	IOperand const * operator/(IOperand const & ref) const
+	{
+		eOperandType maxType = getMaxType(*this, ref);
+		long double a = _value;
+		long double b = stold(ref.toString());
+		if (b == 0.0)
+			throw OperationException("Division by zero");
+		long double c = a / b;
+		if (maxType < Float)
+			return OperandFactory().createOperand(maxType, std::to_string((int)c));
+		return OperandFactory().createOperand(maxType, std::to_string(c));
+	}
+	IOperand const * operator%(IOperand const & ref) const
+	{
+		eOperandType maxType = getMaxType(*this, ref);
+		long double a = _value;
+		long double b = stold(ref.toString());
+		if (b == 0.0)
+			throw OperationException("Modulo by zero");
+		long double c = std::fmod(a, b);
+		if (maxType < Float)
+			return OperandFactory().createOperand(maxType, std::to_string((int)c));
+		return OperandFactory().createOperand(maxType, std::to_string(c));
+	}
 	//tools
 	std::string const & toString( void ) const
 	{
@@ -93,6 +118,28 @@ public:
 			return ref1.getType();
 		return ref2.getType();
 	}
+	//exception
+	class OperationException : public exception
+	{
+	public:
+		OperationException(){}
+		OperationException(std::string msg): _msg(msg) {}
+		OperationException(OperationException const &ref) {*this = ref;}
+		OperationException &operator=(OperationException const &ref)
+		{
+			exception::operator=(ref);
+			return *this;
+		}
+		~OperationException() throw() {}
+		virtual const char* what() const throw()
+		{
+			return _msg.c_str();
+		}
+	private:
+		std::string _msg;
+	};
+
+
 private:
 	void defineTType(void)
 	{
