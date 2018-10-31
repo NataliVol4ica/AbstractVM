@@ -2,4 +2,3 @@
 #include "Operand.hpp"
 
 /* ========= INTERFACE ========= */
-

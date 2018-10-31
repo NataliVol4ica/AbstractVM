@@ -7,6 +7,7 @@
 #include "defines.hpp"
 #include <iostream>
 #include <string>
+#include <cfloat>
 
 //todo: tons of exceptions
 
@@ -53,41 +54,41 @@ public:
 	//operators
 	IOperand const * operator+(IOperand const & ref) const
 	{
-		eOperandType maxType = getMaxType(this, rhs);
-		long double a = this.getValue();
-		long double b = ref.getValue();
+		eOperandType maxType = getMaxType(*this, ref);
+		long double a = _value;
+		long double b = stold(ref.toString());
 		long double c = a + b;
 		//check if this check is necessary
-		if (doesOverflow(maxType, c))
+		/*if (doesOverflow(maxType, c))
 			//throw new exception: value does overflow maxtype
 			;
-		else
+		else*/
 			return OperandFactory().createOperand(maxType, std::to_string(c));
 	}
-	IOperand const * operator+(IOperand const & ref) const
+	IOperand const * operator-(IOperand const & ref) const
 	{
-		eOperandType maxType = getMaxType(this, rhs);
-		long double a = this.getValue();
-		long double b = ref.getValue();
+		eOperandType maxType = getMaxType(*this, ref);
+		long double a = _value;
+		long double b = stold(ref.toString());
 		long double c = a - b;
 		//check if this check is necessary
-		if (doesOverflow(maxType, c))
+		/*if (doesOverflow(maxType, c))
 			//throw new exception: value does overflow maxtype
 			;
-		else
+		else*/
 			return OperandFactory().createOperand(maxType, std::to_string(c));
 	}
 	IOperand const * operator*(IOperand const & ref) const
 	{
-		eOperandType maxType = getMaxType(this, rhs);
-		long double a = this.getValue();
-		long double b = ref.getValue();
+		eOperandType maxType = getMaxType(*this, ref);
+		long double a = _value;
+		long double b = stold(ref.toString());
 		long double c = a * b;
 		//check if this check is necessary
-		if (doesOverflow(maxType, c))
+		/*if (doesOverflow(maxType, c))
 			//throw new exception: value does overflow maxtype
 			;
-		else
+		else*/
 			return OperandFactory().createOperand(maxType, std::to_string(c));
 	}
 	//tools
@@ -95,14 +96,14 @@ public:
 	{
 		return _toString;
 	}
-	eOperandType getMaxType(IOperand const &ref1, IOperand const &ref2)
+	eOperandType getMaxType(Operand<T> const &ref1, IOperand const &ref2) const
 	{
 		if (ref1.getPrecision() > ref2.getPrecision())
 			return ref1.getType();
 		return ref2.getType();
 	}
 	//todo: check if necessary
-	bool doesOverflow(eOperandType type, long double val)
+	bool doesOverflow(eOperandType type, long double val) const
 	{
 		switch (type)
 		{
@@ -143,4 +144,5 @@ private:
 	eOperandType			_type;
 	T						_value;
 	std::string				_toString;
+	static OperandFactory	_of;
 };

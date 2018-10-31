@@ -1,5 +1,6 @@
 
 #include "IOperand.hpp"
+#include "Operand.hpp"
 #include "OperandFactory.hpp"
 
 OperandFactory::func	OperandFactory::createFuncs[] =
@@ -35,9 +36,9 @@ IOperand const * OperandFactory::createInt8(std::string const & value) const
 	}
 	catch (const std::out_of_range&)
 	{
-		cout << "Value " << value << " overflows Int8" << endl;
-		//throw custom exception here
+		throw OutOfRangeException(value, Int8);
 	}
+	//todo: catch invalid argument exc
 }
 
 IOperand const * OperandFactory::createInt16(std::string const & value) const
@@ -52,9 +53,9 @@ IOperand const * OperandFactory::createInt16(std::string const & value) const
 	}
 	catch (const std::out_of_range&)
 	{
-		cout << "Value " << value << " overflows Int16" << endl;
-		//throw custom exception here
+		throw OutOfRangeException(value, Int16);
 	}
+	//todo: catch invalid argument exc
 }
 
 IOperand const * OperandFactory::createInt32(std::string const & value) const
@@ -67,8 +68,7 @@ IOperand const * OperandFactory::createInt32(std::string const & value) const
 	}
 	catch (const std::out_of_range&)
 	{
-		cout << "Value " << value << " overflows Int32" << endl;
-		//throw custom exception here
+		throw OutOfRangeException(value, Int32);
 	}
 	//todo: catch invalid argument exc
 }
@@ -83,8 +83,7 @@ IOperand const * OperandFactory::createFloat(std::string const & value) const
 	}
 	catch (const std::out_of_range&)
 	{
-		cout << "Value " << value << " overflows float" << endl;
-		//throw custom exception here
+		throw OutOfRangeException(value, Float);
 	}
 	//todo: catch invalid argument exc
 }
@@ -98,9 +97,60 @@ IOperand const * OperandFactory::createDouble(std::string const & value) const
 		return new Operand<double>(stodVal);
 	}
 	catch (const std::out_of_range&)
-	{
-		cout << "Value " << value << " overflows double" << endl;
-		//throw custom exception here
+	{		
+		throw OutOfRangeException(value, Double);
 	}
 	//todo: catch invalid argument exc
+}
+
+/* EXCEPTIONS */
+
+// OutOfRange
+
+OperandFactory::OutOfRangeException::OutOfRangeException(){}
+OperandFactory::OutOfRangeException::OutOfRangeException(std::string value, eOperandType type): 
+	_value(value),
+	_type(type)
+	{
+
+	}
+OperandFactory::OutOfRangeException::OutOfRangeException(OutOfRangeException const &ref){*this = ref;}
+OperandFactory::OutOfRangeException &OperandFactory::OutOfRangeException::operator=(OutOfRangeException const &ref)
+{
+	exception::operator=(ref);
+	return *this;
+}
+OperandFactory::OutOfRangeException::~OutOfRangeException() throw() {}
+const char* OperandFactory::OutOfRangeException::what() const throw()
+{
+	std::string str = "Value " + _value + " overflows ";
+	switch (_type)
+	{
+		case Int8:
+		{
+			str += "Int8";
+			break;
+		}
+		case Int16:
+		{
+			str += "Int16";
+			break;
+		}
+		case Int32:
+		{
+			str += "Int32";
+			break;
+		}
+		case Float:
+		{
+			str += "Float";
+			break;
+		}
+		case Double:
+		{
+			str += "Double";
+			break;
+		}
+	}
+	return str.c_str();
 }

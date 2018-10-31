@@ -3,6 +3,7 @@
 #include "avmFuncs.hpp"
 #include "OperandFactory.hpp"
 
+#include <cfloat>
 #include <stdio.h> 
 //todo: canonic form
 
