@@ -17,8 +17,8 @@ int main(void)
 	try
 	{
 		OperandFactory of = OperandFactory();
-		const IOperand *a = of.createOperand(Int8, "127");
-		const IOperand *b = of.createOperand(Int8, "43");
+		const IOperand *a = of.createOperand(Int8, "gdgdf");
+		const IOperand *b = of.createOperand(Int8, "1");
 		const IOperand *c =  *a + *b;
 		cout << c->toString() << endl;
 	}
