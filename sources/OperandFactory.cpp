@@ -40,7 +40,7 @@ IOperand const * OperandFactory::createInt8(std::string const & value) const
 	}
 	catch (const std::invalid_argument&)
 	{
-		throw InvalidArgumentException(value, Double);
+		throw InvalidArgumentException(value, Int8);
 	}
 }
 
@@ -60,7 +60,7 @@ IOperand const * OperandFactory::createInt16(std::string const & value) const
 	}
 	catch (const std::invalid_argument&)
 	{
-		throw InvalidArgumentException(value, Double);
+		throw InvalidArgumentException(value, Int16);
 	}
 }
 
@@ -78,7 +78,7 @@ IOperand const * OperandFactory::createInt32(std::string const & value) const
 	}
 	catch (const std::invalid_argument&)
 	{
-		throw InvalidArgumentException(value, Double);
+		throw InvalidArgumentException(value, Int32);
 	}
 }
 
@@ -96,7 +96,7 @@ IOperand const * OperandFactory::createFloat(std::string const & value) const
 	}
 	catch (const std::invalid_argument&)
 	{
-		throw InvalidArgumentException(value, Double);
+		throw InvalidArgumentException(value, Float);
 	}
 }
 
