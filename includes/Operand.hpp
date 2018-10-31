@@ -3,7 +3,10 @@
 
 #include "eOperandType.hpp"
 #include "IOperand.hpp"
+#include "OperandFactory.hpp"
 #include "defines.hpp"
+#include <iostream>
+#include <string>
 
 //todo: tons of exceptions
 
@@ -48,12 +51,47 @@ public:
 		return _value;
 	}
 	//operators
-	IOperand const * operator+( IOperand const & rhs ) const
+	IOperand const * operator+(IOperand const & ref) const
 	{
-		
+		eOperandType maxType = getMaxType(this, rhs);
+		long double a = this.getValue();
+		long double b = ref.getValue();
+		long double c = a + b;
+		//check if this check is necessary
+		if (doesOverflow(maxType, c))
+			//throw new exception: value does overflow maxtype
+			;
+		else
+			return OperandFactory().createOperand(maxType, std::to_string(c));
+	}
+	IOperand const * operator+(IOperand const & ref) const
+	{
+		eOperandType maxType = getMaxType(this, rhs);
+		long double a = this.getValue();
+		long double b = ref.getValue();
+		long double c = a - b;
+		//check if this check is necessary
+		if (doesOverflow(maxType, c))
+			//throw new exception: value does overflow maxtype
+			;
+		else
+			return OperandFactory().createOperand(maxType, std::to_string(c));
+	}
+	IOperand const * operator*(IOperand const & ref) const
+	{
+		eOperandType maxType = getMaxType(this, rhs);
+		long double a = this.getValue();
+		long double b = ref.getValue();
+		long double c = a * b;
+		//check if this check is necessary
+		if (doesOverflow(maxType, c))
+			//throw new exception: value does overflow maxtype
+			;
+		else
+			return OperandFactory().createOperand(maxType, std::to_string(c));
 	}
 	//tools
-	string const & toString( void ) const
+	std::string const & toString( void ) const
 	{
 		return _toString;
 	}
@@ -63,10 +101,29 @@ public:
 			return ref1.getType();
 		return ref2.getType();
 	}
+	//todo: check if necessary
+	bool doesOverflow(eOperandType type, long double val)
+	{
+		switch (type)
+		{
+		case (Int8):
+			return (val > INT8_MAX || val < INT8_MIN);
+		case (Int16):
+			return  (val > INT16_MAX || val < INT16_MIN);
+		case (Int32):
+			return (val > INT32_MAX || val < INT32_MIN);
+		case (Float):
+			return (val > FLT_MAX || val < -FLT_MAX);
+		case (Double):
+			return (val > DBL_MAX || val < -DBL_MAX);
+		default:
+			return true;
+		}
+	}
 private:
 	void defineTType(void)
 	{
-		string typeName = typeid(T).name();
+		std::string typeName = typeid(T).name();
 		if (typeName == "c")
 			_type = Int8;
 		else if (typeName == "s")
@@ -83,7 +140,7 @@ private:
 		_toString = std::to_string(_value);
 	}
 
-	eOperandType	_type;
-	T				_value;
-	string			_toString;
+	eOperandType			_type;
+	T						_value;
+	std::string				_toString;
 };
