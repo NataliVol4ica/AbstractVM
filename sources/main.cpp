@@ -1,26 +1,32 @@
 
-#include "Operand.hpp"
-#include "avmFuncs.hpp"
-#include "OperandFactory.hpp"
+#include "defines.hpp"
+#include "AVMParser.hpp"
+#include <stdio.h>
+#include <vector>
 
-#include <cfloat>
-#include <stdio.h> 
 //todo: canonic form
 //todo: log flag
+//todo: more funcs
+
 int main(void)
 {	
 	try
 	{
-		OperandFactory of = OperandFactory();
+		std::vector<std::string> lines(2);
+		lines[0] = "push int32(42);";
+		lines[1] = "push int8(42)";
+
+	/*	OperandFactory of = OperandFactory();
 		const IOperand *a = of.createOperand(Int8, "gdgdf");
 		const IOperand *b = of.createOperand(Int8, "1");
 		const IOperand *c =  *a + *b;
 		cout << c->toString() << endl;
+	*/
 	}
 	catch(exception &e)
 	{		
 		cout <<"Error: "<< e.what() << endl;
 	}
-	getchar();
+	//getchar();
 	return 0;
 }

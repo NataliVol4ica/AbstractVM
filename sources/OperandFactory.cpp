@@ -1,7 +1,6 @@
-
+#include "OperandFactory.hpp"
 #include "IOperand.hpp"
 #include "Operand.hpp"
-#include "OperandFactory.hpp"
 
 OperandFactory::func	OperandFactory::createFuncs[] =
 {
@@ -12,18 +11,19 @@ OperandFactory::func	OperandFactory::createFuncs[] =
 	&OperandFactory::createDouble
 };
 
-/* Canonical */
+/* ======== CANONICAL ======== */
+
 OperandFactory::OperandFactory() {}
 OperandFactory::OperandFactory(const OperandFactory&) {}
 OperandFactory & OperandFactory::operator=(const OperandFactory&) { return *this; }
 OperandFactory::~OperandFactory() {}
 
-/* Factory*/
+/* ======== FACTORY ======== */
+
 IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value) const
 {
 	return (this->*createFuncs[type])(value);
 }
-
 IOperand const * OperandFactory::createInt8(std::string const & value) const
 {
 	int stoiVal;
@@ -43,7 +43,6 @@ IOperand const * OperandFactory::createInt8(std::string const & value) const
 		throw InvalidArgumentException(value, "Int8");
 	}
 }
-
 IOperand const * OperandFactory::createInt16(std::string const & value) const
 {
 	int stoiVal;
@@ -63,7 +62,6 @@ IOperand const * OperandFactory::createInt16(std::string const & value) const
 		throw InvalidArgumentException(value, "Int16");
 	}
 }
-
 IOperand const * OperandFactory::createInt32(std::string const & value) const
 {
 	int stoiVal;
@@ -81,7 +79,6 @@ IOperand const * OperandFactory::createInt32(std::string const & value) const
 		throw InvalidArgumentException(value, "Int32");
 	}
 }
-
 IOperand const * OperandFactory::createFloat(std::string const & value) const
 {
 	float stofVal;
@@ -99,7 +96,6 @@ IOperand const * OperandFactory::createFloat(std::string const & value) const
 		throw InvalidArgumentException(value, "Float");
 	}
 }
-
 IOperand const * OperandFactory::createDouble(std::string const & value) const
 {
 	double stodVal;
@@ -118,17 +114,14 @@ IOperand const * OperandFactory::createDouble(std::string const & value) const
 	}
 }
 
-/* EXCEPTIONS */
+/* ======== EXCEPTIONS ======== */
 
-// OutOfRange
-
+/* OutOfRange */
 OperandFactory::OutOfRangeException::OutOfRangeException(){}
-OperandFactory::OutOfRangeException::OutOfRangeException(std::string value, std::string  type):
-	_value(value),
-	_type(type)
-	{
-		_msg = "Value " + _value + " overflows " + _type;
-	}
+OperandFactory::OutOfRangeException::OutOfRangeException(std::string value, std::string  type)
+{
+	_msg = "Value " + value + " overflows " + type;
+}
 OperandFactory::OutOfRangeException::OutOfRangeException(OutOfRangeException const &ref){*this = ref;}
 OperandFactory::OutOfRangeException &OperandFactory::OutOfRangeException::operator=(OutOfRangeException const &ref)
 {
@@ -141,14 +134,11 @@ const char* OperandFactory::OutOfRangeException::what() const throw()
 	return _msg.c_str();
 }
 
-// InvalidArg
-
+/* InvalidArg */
 OperandFactory::InvalidArgumentException::InvalidArgumentException(){}
-OperandFactory::InvalidArgumentException::InvalidArgumentException(std::string value, std::string  type) :
-	_value(value),
-	_type(type)
+OperandFactory::InvalidArgumentException::InvalidArgumentException(std::string value, std::string  type)
 {
-	_msg = "Value " + _value + " overflows " + _type;
+	_msg = "Value " + value + " overflows " + type;
 }
 OperandFactory::InvalidArgumentException::InvalidArgumentException(InvalidArgumentException const &ref){*this = ref;}
 OperandFactory::InvalidArgumentException &OperandFactory::InvalidArgumentException::operator= (InvalidArgumentException const &ref)

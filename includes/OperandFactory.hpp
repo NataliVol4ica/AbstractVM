@@ -3,9 +3,6 @@
 
 #include "defines.hpp"
 #include "IOperand.hpp"
-#include <string> 
-
-//todo: canonic form
 
 class OperandFactory
 {
@@ -27,8 +24,6 @@ public:
 		~OutOfRangeException() throw();
 		virtual const char* what() const throw();
 	private:
-		std::string		_value;
-		std::string		_type;
 		std::string		_msg;
 	};
 	class InvalidArgumentException : public exception
@@ -41,8 +36,6 @@ public:
 		~InvalidArgumentException() throw();
 		virtual const char* what() const throw();
 	private:
-		std::string		_value;
-		std::string		_type;
 		std::string		_msg;
 	};
 

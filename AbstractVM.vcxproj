@@ -101,11 +101,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="sources\OperandFactory.cpp" />
+    <ClCompile Include="sources\AVMParser.cpp" />
     <ClCompile Include="sources\main.cpp" />
+    <ClCompile Include="sources\OperandFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="includes\avmFuncs.hpp" />
+    <ClInclude Include="includes\AVMParser.hpp" />
     <ClInclude Include="includes\defines.hpp" />
     <ClInclude Include="includes\eOperandType.hpp" />
     <ClInclude Include="includes\IOperand.hpp" />
