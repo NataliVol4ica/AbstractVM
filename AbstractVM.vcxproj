@@ -103,7 +103,6 @@
   <ItemGroup>
     <ClCompile Include="sources\OperandFactory.cpp" />
     <ClCompile Include="sources\main.cpp" />
-    <ClCompile Include="sources\Operand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\avmFuncs.hpp" />

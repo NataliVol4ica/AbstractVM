@@ -3,6 +3,7 @@
 
 #include "defines.hpp"
 #include "IOperand.hpp"
+#include <string> 
 
 //todo: canonic form
 
@@ -20,27 +21,29 @@ public:
 	{
 	public:
 		OutOfRangeException();
-		OutOfRangeException(std::string value, eOperandType type);
+		OutOfRangeException(std::string value, std::string type);
 		OutOfRangeException(OutOfRangeException const &ref);
 		OutOfRangeException &operator=(OutOfRangeException const &ref);
 		~OutOfRangeException() throw();
 		virtual const char* what() const throw();
 	private:
-		std::string _value;
-		eOperandType _type;
+		std::string		_value;
+		std::string		_type;
+		std::string		_msg;
 	};
 	class InvalidArgumentException : public exception
 	{
 	public:
 		InvalidArgumentException();
-		InvalidArgumentException(std::string value, eOperandType type);
+		InvalidArgumentException(std::string value, std::string type);
 		InvalidArgumentException(InvalidArgumentException const &ref);
 		InvalidArgumentException &operator=(InvalidArgumentException const &ref);
 		~InvalidArgumentException() throw();
 		virtual const char* what() const throw();
 	private:
-		std::string _value;
-		eOperandType _type;
+		std::string		_value;
+		std::string		_type;
+		std::string		_msg;
 	};
 
 private:

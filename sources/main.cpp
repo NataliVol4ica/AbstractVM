@@ -21,5 +21,6 @@ int main(void)
 	{		
 		cout <<"Error: "<< e.what() << endl;
 	}
+	getchar();
 	return 0;
 }
