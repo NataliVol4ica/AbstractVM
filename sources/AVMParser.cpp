@@ -10,9 +10,13 @@ void AVMParser::Parse(std::vector<std::string> program)
 	for (size_t i = 0; i < program.size(); i++)
 	{
 		std::vector<std::string> stringTokens = Tokenize(program[i], i, errors);
-		//check errors try catch
-		//recognize lexems (struct string + enum)
-		//compile
+		if (errors == 0)
+		{
+			std::vector<LexemToken> lTokens = RecognizeLexems(stringTokens);
+			//check errors try catch
+			//recognize lexems (struct string + enum)
+			//compile
+		}
 	}
 	cout << "Errors in total: " << errors << endl;
 }
@@ -21,6 +25,7 @@ std::vector<std::string> AVMParser::Tokenize(std::string program, size_t line, i
 {
 	std::vector<std::string> tokens;
 	std::smatch sm;
+	std::string str;
 	while (regex_search(program, sm, _lexemRegEx))
 	{
 		if (sm.prefix().length() != 0)
@@ -28,8 +33,10 @@ std::vector<std::string> AVMParser::Tokenize(std::string program, size_t line, i
 			errors++;
 			cout << "Line " << line << ": unknow lexem \"" << sm.prefix() << "\"" << endl;
 		}
-		//cout << sm.str() << '\n';
-		tokens.push_back(sm.str());
+		str = sm.str();
+		str.erase(0, str.find_first_not_of("\t\n\v\f\r "));
+		str.erase(str.find_last_not_of("\t\n\v\f\r ") + 1);
+		tokens.push_back(str);
 		program = sm.suffix();
 	}
 	if (program.length() > 0)
@@ -51,7 +58,7 @@ std::vector<LexemToken> AVMParser::RecognizeLexems(std::vector<std::string> toke
 		}
 		catch (exception)
 		{
-			cout << tokens[i] << endl;
+			cout << "\"" << tokens[i] << "\"" << endl;
 		}
 	}
 	return lTokens;
