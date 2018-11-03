@@ -10,10 +10,10 @@ class AVMParser
 {
 public:
 	AVMParser();
-	AVMParser(std::vector<std::string> lines);
+	void Parse(std::vector<std::string> program);
 
 private:
-	std::vector<std::string> _lines;
+	std::vector<std::string> Tokenize(std::string program, size_t line);
 	//todo: check if needed
 	const std::regex _validRegEx = std::regex(
 		"\\A\\s*("
@@ -24,13 +24,25 @@ private:
 		"pop|dump|add|sub|mul|div|mod|print|exit"
 		")\\s*\\Z");
 	const std::regex _lexemRegEx = std::regex(
-		"\\G\\s*("
-		"(;.*(\\n|\\z))|"
+		"\\s*("
+		"(;.*)|"
 		"push|assert|pop|dump|add|sub|mul|div|mod|print|exit|"
 		"int8|int16|int32|float|double|"
 		"\\(|\\)|"
-		"[+-]?\\d+(.\\d+)?|"
-		"\\n"
+		"[+-]?\\d+(.\\d+)?"
 		")\\s*");
 };
-//enum singleOp paramOp paramType oBr cBr intNum fracNum newLine comment garbage
+
+enum eLexemType
+{
+	singleOp,
+	paramOp,
+	paramType,
+	oBr,
+	cBr,
+	intNum,
+	fracNum,
+	newLine,
+	comment,
+	garbage
+};

@@ -8,12 +8,17 @@
 //todo: more funcs
 
 int main(void)
+
 {	
 	try
 	{
-		std::vector<std::string> lines(2);
-		lines[0] = "push int32(42);";
-		lines[1] = "push int8(42)";
+		std::vector<std::string> prog;
+		prog.push_back("push int32(42);cmnt push");
+		prog.push_back("nekotorii musor");
+		prog.push_back("eshemusorpush int32(0)");
+		prog.push_back("push int8(42.3)");
+		AVMParser p = AVMParser();
+		p.Parse(prog);
 
 	/*	OperandFactory of = OperandFactory();
 		const IOperand *a = of.createOperand(Int8, "gdgdf");
@@ -26,7 +31,7 @@ int main(void)
 	{		
 		cout <<"Error: "<< e.what() << endl;
 	}
-	//getchar();
+	getchar();
 	return 0;
 }
 /*std::ifstream t("file.txt");
