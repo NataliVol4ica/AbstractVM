@@ -109,7 +109,9 @@
     <ClInclude Include="includes\AVMParser.hpp" />
     <ClInclude Include="includes\defines.hpp" />
     <ClInclude Include="includes\eOperandType.hpp" />
+    <ClInclude Include="includes\eLexemType.hpp" />
     <ClInclude Include="includes\IOperand.hpp" />
+    <ClInclude Include="includes\LexemToken.hpp" />
     <ClInclude Include="includes\Operand.hpp" />
     <ClInclude Include="includes\OperandFactory.hpp" />
   </ItemGroup>

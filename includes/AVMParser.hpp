@@ -3,8 +3,11 @@
 
 #include "defines.hpp"
 #include "OperandFactory.hpp"
+#include "eLexemType.hpp"
+#include "LexemToken.hpp"
 #include <vector>
 #include <regex>
+#include <map>
 
 class AVMParser
 {
@@ -13,7 +16,8 @@ public:
 	void Parse(std::vector<std::string> program);
 
 private:
-	std::vector<std::string> Tokenize(std::string program, size_t line);
+	std::vector<std::string> Tokenize(std::string program, size_t line, int &errors);
+	std::vector<LexemToken> RecognizeLexems(std::vector<std::string> tokens);
 	//todo: check if needed
 	const std::regex _validRegEx = std::regex(
 		"\\A\\s*("
@@ -31,18 +35,25 @@ private:
 		"\\(|\\)|"
 		"[+-]?\\d+(.\\d+)?"
 		")\\s*");
-};
-
-enum eLexemType
-{
-	singleOp,
-	paramOp,
-	paramType,
-	oBr,
-	cBr,
-	intNum,
-	fracNum,
-	newLine,
-	comment,
-	garbage
+	std::map<std::string, eLexemType> lexemMap = {
+	{"push", paramOp},
+	{"assert", paramOp},
+	{ "pop", singleOp },
+	{ "dump", singleOp },
+	{ "add", singleOp },
+	{ "sub", singleOp },
+	{ "mul", singleOp },
+	{ "div", singleOp },
+	{ "mod", singleOp },
+	{ "print", singleOp },
+	{ "exit", singleOp },
+	{ "int8", paramType },
+	{ "int16", paramType },
+	{ "int32", paramType },
+	{ "Float", paramType },
+	{ "Double", paramType },
+	{"(", oBr},
+	{")", cBr}
+	};
+	//try access map catch if coment or number
 };
