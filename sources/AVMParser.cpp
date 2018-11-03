@@ -58,7 +58,13 @@ std::vector<LexemToken> AVMParser::RecognizeLexems(std::vector<std::string> toke
 		}
 		catch (exception)
 		{
-			cout << "\"" << tokens[i] << "\"" << endl;
+			//cout << "\"" << tokens[i] << "\"" << endl;
+			if (tokens[i][0] == ';')
+				lTokens.push_back(LexemToken(tokens[i], comment));
+			else if (tokens[i].find(".") != std::string::npos)
+				lTokens.push_back(LexemToken(tokens[i], fracNum));
+			else
+				lTokens.push_back(LexemToken(tokens[i], intNum));
 		}
 	}
 	return lTokens;

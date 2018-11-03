@@ -14,8 +14,8 @@ int main(void)
 	{
 		std::vector<std::string> prog;
 		prog.push_back("push int32(42);cmnt push");
-		prog.push_back("nekotorii musor");
-		prog.push_back("eshemusorpush int32(0)");
+		//prog.push_back("nekotorii musor");
+		//prog.push_back("eshemusorpush int32(0)");
 		prog.push_back("push int8(42.3)");
 		AVMParser p = AVMParser();
 		p.Parse(prog);
