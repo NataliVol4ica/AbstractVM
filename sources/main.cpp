@@ -1,4 +1,3 @@
-
 #include "defines.hpp"
 #include "AVMParser.hpp"
 #include <stdio.h>
@@ -30,3 +29,9 @@ int main(void)
 	//getchar();
 	return 0;
 }
+/*std::ifstream t("file.txt");
+std::stringstream buffer;
+buffer << t.rdbuf();
+
+Now the contents of "file.txt" are available in a string as buffer.str().*/
+//read from std while cin does not match ";;.*"
