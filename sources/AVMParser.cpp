@@ -35,6 +35,7 @@ void AVMParser::Parse(std::vector<std::string> program)
 	{
 		cout <<e.what()<<endl;
 	}
+	//todo: remember check if exit met!
 }
 std::vector<std::string> AVMParser::Tokenize(std::string program, size_t line, int &errors)
 {
@@ -177,7 +178,7 @@ void AVMParser::push(eOperandType type, std::string value, size_t line)
 {
 	try
 	{
-		opStack.push(_of.createOperand(type, value));
+		opStack.push_back(_of.createOperand(type, value));
 	}
 	catch (exception &e)
 	{
@@ -186,7 +187,7 @@ void AVMParser::push(eOperandType type, std::string value, size_t line)
 }
 void AVMParser::assert(eOperandType type, std::string value, size_t line)
 {
-	const IOperand *top = opStack.top();
+	const IOperand *top = opStack.back();
 	if (top->getType() != type || top->toString() != value)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": assert failed");
 }
@@ -195,14 +196,22 @@ void AVMParser::pop(size_t line)
 {
 	try
 	{
-		const IOperand *top = opStack.top();
+		const IOperand *top = opStack.back();
 		delete(top);
-		opStack.pop();
+		opStack.pop_back();
 	}
 	catch (exception &e)
 	{
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Pop on empty stack");
 	}
+}
+
+void AVMParser::dump(size_t line)
+{
+	for (size_t i = 0; i < opStack.size(); i++)
+		cout <<opStack[i]->toString()<<endl;
+	(void)line;
+	//todo: think of exception?
 }
 
 /* ==== VARIABLES ==== */
@@ -241,7 +250,8 @@ const std::map<std::string, AVMParser::paramFunc> AVMParser::_paramCmdMap = {
 	{"assert", &AVMParser::assert}
 };
 const std::map<std::string, AVMParser::singleFunc> AVMParser::_singleCmdMap = {
-	{"pop", &AVMParser::pop}
+	{"pop", &AVMParser::pop},
+	{"dump", &AVMParser::dump}
 };
 
 /* ==== EXCEPTIONS ==== */

@@ -40,25 +40,22 @@ private:
 
 	eOperandType RecognizeType(std::string str);
 	
+	/* ops */
 	void push(eOperandType type, std::string value, size_t line);
 	void assert(eOperandType type, std::string value, size_t line);
 
 	void pop(size_t line);
+	void dump(size_t line);
 
-
-
-	std::stack<const IOperand*> opStack;
-
-	static const std::regex _lexemRegEx;
-	static const std::map<std::string, eLexemType> _lexemMap;
-
+	/* vars */
 	typedef void(AVMParser::*paramFunc)(eOperandType, std::string, size_t);
 	typedef void(AVMParser::*singleFunc)(size_t);
 
-	static const std::map<std::string, paramFunc > _paramCmdMap;
-	static const std::map<std::string, singleFunc> _singleCmdMap;
-
+	std::vector<const IOperand*> opStack;
 	static const OperandFactory _of;
 
-	//todo: map {operation, function pointer} ?? two maps
+	static const std::regex _lexemRegEx;
+	static const std::map<std::string, eLexemType> _lexemMap;
+	static const std::map<std::string, paramFunc > _paramCmdMap;
+	static const std::map<std::string, singleFunc> _singleCmdMap;
 };
