@@ -221,9 +221,9 @@ void AVMParser::add(size_t line)
 	if (opStack.size() < 2)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
 	const IOperand *a, *b;
-	a = opStack.back();
-	opStack.pop_back();
 	b = opStack.back();
+	opStack.pop_back();
+	a = opStack.back();
 	opStack.pop_back();
 	try
 	{	
@@ -244,9 +244,9 @@ void AVMParser::sub(size_t line)
 	if (opStack.size() < 2)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
 	const IOperand *a, *b;
-	a = opStack.back();
-	opStack.pop_back();
 	b = opStack.back();
+	opStack.pop_back();
+	a = opStack.back();
 	opStack.pop_back();
 	try
 	{	
@@ -267,9 +267,9 @@ void AVMParser::mul(size_t line)
 	if (opStack.size() < 2)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
 	const IOperand *a, *b;
-	a = opStack.back();
-	opStack.pop_back();
 	b = opStack.back();
+	opStack.pop_back();
+	a = opStack.back();
 	opStack.pop_back();
 	try
 	{	
@@ -290,9 +290,9 @@ void AVMParser::div(size_t line)
 	if (opStack.size() < 2)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
 	const IOperand *a, *b;
-	a = opStack.back();
-	opStack.pop_back();
 	b = opStack.back();
+	opStack.pop_back();
+	a = opStack.back();
 	opStack.pop_back();
 	try
 	{	
@@ -313,9 +313,9 @@ void AVMParser::mod(size_t line)
 	if (opStack.size() < 2)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
 	const IOperand *a, *b;
-	a = opStack.back();
-	opStack.pop_back();
 	b = opStack.back();
+	opStack.pop_back();
+	a = opStack.back();
 	opStack.pop_back();
 	try
 	{	
@@ -347,13 +347,31 @@ void AVMParser::exit(size_t line)
 	(void)line;
 }
 
+void AVMParser::size(size_t line)
+{
+	cout<<opStack.size()<<endl;
+	(void)line;
+}
+
+void AVMParser::clean(size_t line)
+{
+	const IOperand *top;
+	while (opStack.size() > 0)
+	{
+		top = opStack.back();
+		delete(top);
+		opStack.pop_back();
+	}
+	(void)line;
+}
+
 /* ==== VARIABLES ==== */
 
 const OperandFactory AVMParser::_of = OperandFactory();
 const std::regex AVMParser::_lexemRegEx = std::regex(
 		"\\s*("
 		"(;.*)|"
-		"push|assert|pop|dump|add|sub|mul|div|mod|print|exit|"
+		"push|assert|pop|dump|add|sub|mul|div|mod|print|exit|size|clean|"
 		"int8|int16|int32|float|double|"
 		"\\(|\\)|"
 		"[+-]?\\d+(.\\d+)?"
@@ -370,6 +388,8 @@ const std::map<std::string, eLexemType> AVMParser::_lexemMap = {
 	{ "mod", singleOp },
 	{ "print", singleOp },
 	{ "exit", singleOp },
+	{ "size", singleOp },
+	{ "clean", singleOp },
 	{ "int8", paramIntType },
 	{ "int16", paramIntType },
 	{ "int32", paramIntType },
@@ -391,7 +411,9 @@ const std::map<std::string, AVMParser::singleFunc> AVMParser::_singleCmdMap = {
 	{"div", &AVMParser::div},
 	{"mod", &AVMParser::mod},
 	{"print", &AVMParser::print},
-	{"exit", &AVMParser::exit}
+	{"exit", &AVMParser::exit},
+	{"size", &AVMParser::size},
+	{"clean", &AVMParser::clean}
 };
 
 /* ==== EXCEPTIONS ==== */

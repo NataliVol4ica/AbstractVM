@@ -55,6 +55,8 @@ private:
 	void mod(size_t line);
 	void print(size_t line);
 	void exit(size_t line);
+	void size(size_t line); //prints current stack size
+	void clean(size_t line); //cleans the whole stack
 
 	/* vars */
 

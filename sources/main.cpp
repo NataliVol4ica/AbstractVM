@@ -8,6 +8,8 @@
 //todo: more funcs
 //todo: rm (void)-s
 //todo: add command size
+//todo: add command clean
+//todo: print the program with numerated lines
 
 int main(void)
 
@@ -28,6 +30,13 @@ int main(void)
 		prog.push_back("dump");
 		prog.push_back("push int8(-2)");
 		prog.push_back("print");
+		prog.push_back("size");
+		prog.push_back("clean");
+		//prog.push_back("pop");
+		prog.push_back("push int8(2)");
+		prog.push_back("push int8(1)");
+		prog.push_back("sub");
+		prog.push_back("dump");
 		prog.push_back("exit");
 		AVMParser p = AVMParser();
 		p.Parse(prog);
@@ -41,7 +50,7 @@ int main(void)
 	}
 	catch(exception &e)
 	{		
-		cout <<"Error: "<< e.what() << endl;
+		cout << e.what() << endl;
 	}
 	catch(exception *e)
 	{		
