@@ -19,6 +19,18 @@ class AVMParser
 public:
 	AVMParser();
 	void Parse(std::vector<std::string> program);
+	class AVMParseException : public exception
+	{
+	public:
+		AVMParseException();
+		AVMParseException(std::string msg);
+		AVMParseException(AVMParseException const &ref);
+		AVMParseException &operator=(AVMParseException const &ref);
+		~AVMParseException() throw();
+		virtual const char* what() const throw();
+	private:
+		std::string		_msg;
+	};
 
 private:
 	std::vector<std::string> Tokenize(std::string program, size_t line, int &errors);
@@ -32,6 +44,8 @@ private:
 	void assert(eOperandType type, std::string value, size_t line);
 
 	void pop(size_t line);
+
+
 
 	std::stack<const IOperand*> opStack;
 
