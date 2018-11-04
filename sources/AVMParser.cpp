@@ -168,10 +168,14 @@ eOperandType AVMParser::RecognizeType(std::string str)
 
 void AVMParser::push(eOperandType type, std::string value, size_t line)
 {
-	//opStack.push(OperandFactory().)
-	(void)type;
-	(void)value;
-	(void)line;
+	try
+	{
+		opStack.push(_of.createOperand(type, value));
+	}
+	catch (exception &e)
+	{
+		cout <<"Error: Line "<<line<<": "<<e.what()<<endl;
+	}
 }
 void AVMParser::assert(eOperandType type, std::string value, size_t line)
 {

@@ -33,7 +33,7 @@ private:
 
 	void pop(size_t line);
 
-	std::stack<IOperand*> opStack;
+	std::stack<const IOperand*> opStack;
 
 	static const std::regex _lexemRegEx;
 	static const std::map<std::string, eLexemType> _lexemMap;
