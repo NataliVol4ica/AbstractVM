@@ -4,10 +4,13 @@
 
 AVMParser::AVMParser() {}
 
+/* ==== PARSING ==== */
+
 void AVMParser::Parse(std::vector<std::string> program)
 {
 	int errors = 0;
 	std::vector<std::string> stringTokens [program.size()];
+	std::vector<LexemToken> lTokens [program.size()];
 	for (size_t i = 0; i < program.size(); i++)
 		stringTokens[i] = Tokenize(program[i], i + 1, errors);
 	//todo: create exception
@@ -16,17 +19,16 @@ void AVMParser::Parse(std::vector<std::string> program)
 		return;
 	for (size_t i = 0; i < program.size(); i++)
 	{
-			std::vector<LexemToken> lTokens = RecognizeLexems(stringTokens[i]);
-			SyntaxAnal(lTokens, i + 1, errors);
-			//Run(lTokens);
-			//compile
+		lTokens[i] = RecognizeLexems(stringTokens[i]);
+		SyntaxAnal(lTokens[i], i + 1, errors);
 	}
 	//todo: create exception
 	cout << "Syntax errors in total: " << errors << endl;
 	if (errors != 0)
 		return;
+	for (size_t i = 0; i < program.size(); i++)
+		Run(lTokens[i], i + 1);
 }
-
 std::vector<std::string> AVMParser::Tokenize(std::string program, size_t line, int &errors)
 {
 	std::vector<std::string> tokens;
@@ -52,7 +54,6 @@ std::vector<std::string> AVMParser::Tokenize(std::string program, size_t line, i
 	}
 	return tokens;
 }
-
 std::vector<LexemToken> AVMParser::RecognizeLexems(std::vector<std::string> tokens)
 {
 	std::vector<LexemToken> lTokens;
@@ -75,7 +76,6 @@ std::vector<LexemToken> AVMParser::RecognizeLexems(std::vector<std::string> toke
 	}
 	return lTokens;
 }
-
 void AVMParser::SyntaxAnal(std::vector<LexemToken> lTokens, size_t line, int &errors)
 {
 	if (lTokens.size() == 0)
@@ -139,6 +139,49 @@ void AVMParser::SyntaxAnal(std::vector<LexemToken> lTokens, size_t line, int &er
 		}
 	}
 }
+void AVMParser::Run(std::vector<LexemToken> tokens, size_t line)
+{
+	//100% valid
+	if (tokens.size() == 0 || tokens[0].type == comment)
+		return;
+	if (tokens[0].type == paramOp)
+		(this->*_paramCmdMap.at(tokens[0].str))(RecognizeType(tokens[1].str), tokens[3].str, line);
+	else		
+		(this->*_singleCmdMap.at(tokens[0].str))(line);
+	(void)line;
+}
+eOperandType AVMParser::RecognizeType(std::string str)
+{
+	if (str == "int8")
+		return Int8;
+	if (str == "int16")
+		return Int16;
+	if (str == "int32")
+		return Int32;
+	if (str == "float")
+		return Float;
+	return Double;
+}
+
+/* ==== COMMANDS ==== */
+
+void AVMParser::push(eOperandType type, std::string value, size_t line)
+{
+	(void)type;
+	(void)value;
+	(void)line;
+}
+void AVMParser::assert(eOperandType type, std::string value, size_t line)
+{
+	(void)type;
+	(void)value;
+	(void)line;
+}
+
+void AVMParser::pop(size_t line)
+{
+	(void)line;
+}
 
 /* ==== VARIABLES ==== */
 
@@ -170,3 +213,10 @@ const std::map<std::string, eLexemType> AVMParser::_lexemMap = {
 	{"(", oBr},
 	{")", cBr}
 	};
+const std::map<std::string, AVMParser::paramFunc> AVMParser::_paramCmdMap = {
+	{"push", &AVMParser::push},
+	{"assert", &AVMParser::assert}
+};
+const std::map<std::string, AVMParser::singleFunc> AVMParser::_singleCmdMap = {
+	{"pop", &AVMParser::pop}
+};

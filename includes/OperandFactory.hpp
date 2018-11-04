@@ -50,3 +50,5 @@ private:
 	typedef IOperand const* (OperandFactory::*func)(std::string const & value) const;
 	static func createFuncs[];
 };
+
+	//todo: replace array with map?

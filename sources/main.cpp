@@ -6,6 +6,7 @@
 //todo: canonic form
 //todo: log flag
 //todo: more funcs
+//todo: rm (void)-s
 
 int main(void)
 
