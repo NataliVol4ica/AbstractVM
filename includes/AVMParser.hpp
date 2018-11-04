@@ -13,6 +13,7 @@
 
 //todo: canonical
 //todo: free stack in destructor
+//todo: think of making class static !!!!
 
 class AVMParser
 {
@@ -46,8 +47,18 @@ private:
 
 	void pop(size_t line);
 	void dump(size_t line);
+	void add(size_t line);
+	void sub(size_t line);
+	void mul(size_t line);
+	void div(size_t line);
+	void mod(size_t line);
+	void print(size_t line);
+	void exit(size_t line);
 
 	/* vars */
+
+	bool _toExit;
+
 	typedef void(AVMParser::*paramFunc)(eOperandType, std::string, size_t);
 	typedef void(AVMParser::*singleFunc)(size_t);
 

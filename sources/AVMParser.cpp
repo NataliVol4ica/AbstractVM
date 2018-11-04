@@ -2,7 +2,7 @@
 
 /* ======== CANONICAL ======== */
 
-AVMParser::AVMParser() {}
+AVMParser::AVMParser() :_toExit(false) {}
 
 /* ==== PARSING ==== */
 
@@ -13,29 +13,27 @@ void AVMParser::Parse(std::vector<std::string> program)
 	std::vector<LexemToken> lTokens [program.size()];
 	for (size_t i = 0; i < program.size(); i++)
 		stringTokens[i] = Tokenize(program[i], i + 1, errors);
-	//todo: create exception
-	cout << "Lexical errors in total: " << errors << endl;
-	if (errors != 0)
-		return;
+	if (errors != 0)		
+		throw AVMParseException("Shutting down: Program has " + std::to_string(errors) + " lexical errors");
 	for (size_t i = 0; i < program.size(); i++)
 	{
 		lTokens[i] = RecognizeLexems(stringTokens[i]);
 		SyntaxAnal(lTokens[i], i + 1, errors);
 	}
-	//todo: create exception
-	cout << "Syntax errors in total: " << errors << endl;
-	if (errors != 0)
-		return;
-	try
+	if (errors != 0)		
+		throw AVMParseException("Shutting down: Program has " + std::to_string(errors) + " syntax errors");
+	for (size_t i = 0; i < program.size(); i++)
 	{
-		for (size_t i = 0; i < program.size(); i++)
-			Run(lTokens[i], i + 1);
+		Run(lTokens[i], i + 1);
+		if (_toExit)
+			break;
 	}
-	catch (exception &e)
+	if (!_toExit)
 	{
-		cout <<e.what()<<endl;
+		cout <<"throwing"<<endl;
+		throw AVMParseException("Error: Program is missing exit");
 	}
-	//todo: remember check if exit met!
+	
 }
 std::vector<std::string> AVMParser::Tokenize(std::string program, size_t line, int &errors)
 {
@@ -213,6 +211,60 @@ void AVMParser::dump(size_t line)
 	(void)line;
 	//todo: think of exception?
 }
+void AVMParser::add(size_t line)
+{
+	const IOperand *a, *b;
+	try
+	{
+		a = opStack.back();
+		opStack.pop_back();
+		b = opStack.back();
+		opStack.pop_back();
+	}	
+	catch (exception &e)
+	{
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+	}
+	try
+	{	
+		opStack.push_back(*a + *b);
+	}	
+	catch (exception &e)
+	{
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": " + e.what());
+	}
+}
+
+void AVMParser::sub(size_t line)
+{
+	(void)line;
+}
+
+void AVMParser::mul(size_t line)
+{
+	(void)line;
+}
+
+void AVMParser::div(size_t line)
+{
+	(void)line;
+}
+
+void AVMParser::mod(size_t line)
+{
+	(void)line;
+}
+
+void AVMParser::print(size_t line)
+{
+	(void)line;
+}
+
+void AVMParser::exit(size_t line)
+{
+	_toExit = true;
+	(void)line;
+}
 
 /* ==== VARIABLES ==== */
 
@@ -251,7 +303,14 @@ const std::map<std::string, AVMParser::paramFunc> AVMParser::_paramCmdMap = {
 };
 const std::map<std::string, AVMParser::singleFunc> AVMParser::_singleCmdMap = {
 	{"pop", &AVMParser::pop},
-	{"dump", &AVMParser::dump}
+	{"dump", &AVMParser::dump},
+	{"add", &AVMParser::add},
+	{"sub", &AVMParser::sub},
+	{"mul", &AVMParser::mul},
+	{"div", &AVMParser::div},
+	{"mod", &AVMParser::mod},
+	{"print", &AVMParser::print},
+	{"exit", &AVMParser::exit}
 };
 
 /* ==== EXCEPTIONS ==== */

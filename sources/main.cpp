@@ -23,6 +23,7 @@ int main(void)
 		//prog.push_back("push int8(42.3)");
 		prog.push_back("push int8(41)");
 		prog.push_back("dump");
+		prog.push_back("exit");
 		AVMParser p = AVMParser();
 		p.Parse(prog);
 
@@ -36,6 +37,10 @@ int main(void)
 	catch(exception &e)
 	{		
 		cout <<"Error: "<< e.what() << endl;
+	}
+	catch(exception *e)
+	{		
+		cout <<"Error: "<< e->what() << endl;
 	}
 	//getchar();
 	return 0;
