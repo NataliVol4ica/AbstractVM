@@ -7,18 +7,24 @@ AVMParser::AVMParser() {}
 void AVMParser::Parse(std::vector<std::string> program)
 {
 	int errors = 0;
+	std::vector<std::string> stringTokens [program.size()];
+	for (size_t i = 0; i < program.size(); i++)
+		stringTokens[i] = Tokenize(program[i], i + 1, errors);
+	//todo: create exception
+	cout << "Lexical errors in total: " << errors << endl;
+	if (errors != 0)
+		return;
 	for (size_t i = 0; i < program.size(); i++)
 	{
-		std::vector<std::string> stringTokens = Tokenize(program[i], i, errors);
-		if (errors == 0)
-		{
-			std::vector<LexemToken> lTokens = RecognizeLexems(stringTokens);
-			//SyntaxAnal(lTokens);
+			std::vector<LexemToken> lTokens = RecognizeLexems(stringTokens[i]);
+			SyntaxAnal(lTokens, i + 1, errors);
 			//Run(lTokens);
 			//compile
-		}
 	}
-	cout << "Errors in total: " << errors << endl;
+	//todo: create exception
+	cout << "Syntax errors in total: " << errors << endl;
+	if (errors != 0)
+		return;
 }
 
 std::vector<std::string> AVMParser::Tokenize(std::string program, size_t line, int &errors)
@@ -54,7 +60,7 @@ std::vector<LexemToken> AVMParser::RecognizeLexems(std::vector<std::string> toke
 	{
 		try
 		{
-			lTokens.push_back(LexemToken(tokens[i], lexemMap.at(tokens[i])));
+			lTokens.push_back(LexemToken(tokens[i], _lexemMap.at(tokens[i])));
 		}
 		catch (exception)
 		{
@@ -70,3 +76,97 @@ std::vector<LexemToken> AVMParser::RecognizeLexems(std::vector<std::string> toke
 	return lTokens;
 }
 
+void AVMParser::SyntaxAnal(std::vector<LexemToken> lTokens, size_t line, int &errors)
+{
+	if (lTokens.size() == 0)
+		return;
+	switch(lTokens[0].type)
+	{
+		case comment:
+			return;
+		case singleOp:
+		{
+			if (lTokens.size() == 1 || lTokens[1].type == comment)
+				return;
+			errors++;
+			cout << "Line "<<line<<": Syntax error: "<<lTokens[0].str<<" has too many arguments" <<endl;
+			return;
+		}
+		case paramOp:
+		{
+			if (lTokens.size() < 5)
+			{
+				errors++;
+				cout << "Line "<<line<<": Syntax error: command does not fit format \"cmd type(value)\"" <<endl;
+				return;
+			}			
+			if (lTokens[1].type != paramIntType && lTokens[1].type != paramFracType)
+			{
+				errors++;
+				cout << "Line "<<line<<": Syntax error: "<<lTokens[1].str<<" is not a value type" <<endl;
+				return;
+			}
+			if (lTokens[2].type != oBr)
+			{
+				errors++;
+				cout << "Line "<<line<<": Syntax error: "<<lTokens[2].str<<" is not an opening bracket" <<endl;
+				return;
+			}			
+			if ((lTokens[3].type != intNum && lTokens[3].type != fracNum) || 
+				(lTokens[1].type == paramIntType && lTokens[3].type == fracNum))
+			{
+				errors++;
+				cout << "Line "<<line<<": Syntax error: "<<lTokens[1].str<<" is missing proper value (having "<<lTokens[3].str<<")" <<endl;
+				return;
+			}
+			if (lTokens[4].type != cBr)
+			{
+				errors++;
+				cout << "Line "<<line<<": Syntax error: "<<lTokens[4].str<<" is not a closing bracket" <<endl;
+				return;
+			}		
+			if (lTokens.size() == 5 || lTokens[5].type == comment)
+				return;
+			errors++;
+			cout << "Line "<<line<<": Syntax error: "<<lTokens[0].str<<" has too many arguments" <<endl;
+			return;
+		}
+		default:
+		{			
+			errors++;
+			cout << "Line "<<line<<": Syntax error: line has to start with command" <<endl;
+			//todo: process string starting of something not being a comment
+		}
+	}
+}
+
+/* ==== VARIABLES ==== */
+
+const std::regex AVMParser::_lexemRegEx = std::regex(
+		"\\s*("
+		"(;.*)|"
+		"push|assert|pop|dump|add|sub|mul|div|mod|print|exit|"
+		"int8|int16|int32|float|double|"
+		"\\(|\\)|"
+		"[+-]?\\d+(.\\d+)?"
+		")\\s*");
+const std::map<std::string, eLexemType> AVMParser::_lexemMap = {
+	{"push", paramOp},
+	{"assert", paramOp},
+	{ "pop", singleOp },
+	{ "dump", singleOp },
+	{ "add", singleOp },
+	{ "sub", singleOp },
+	{ "mul", singleOp },
+	{ "div", singleOp },
+	{ "mod", singleOp },
+	{ "print", singleOp },
+	{ "exit", singleOp },
+	{ "int8", paramIntType },
+	{ "int16", paramIntType },
+	{ "int32", paramIntType },
+	{ "Float", paramFracType },
+	{ "Double", paramFracType },
+	{"(", oBr},
+	{")", cBr}
+	};

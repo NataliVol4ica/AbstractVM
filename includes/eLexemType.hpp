@@ -4,7 +4,8 @@ enum eLexemType
 {
 	singleOp,
 	paramOp,
-	paramType,
+	paramIntType,
+	paramFracType,
 	oBr,
 	cBr,
 	intNum,
