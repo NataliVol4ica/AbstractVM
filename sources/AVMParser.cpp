@@ -26,8 +26,15 @@ void AVMParser::Parse(std::vector<std::string> program)
 	cout << "Syntax errors in total: " << errors << endl;
 	if (errors != 0)
 		return;
-	for (size_t i = 0; i < program.size(); i++)
-		Run(lTokens[i], i + 1);
+	try
+	{
+		for (size_t i = 0; i < program.size(); i++)
+			Run(lTokens[i], i + 1);
+	}
+	catch (exception &e)
+	{
+		cout <<e.what()<<endl;
+	}
 }
 std::vector<std::string> AVMParser::Tokenize(std::string program, size_t line, int &errors)
 {
@@ -174,14 +181,21 @@ void AVMParser::push(eOperandType type, std::string value, size_t line)
 	}
 	catch (exception &e)
 	{
-		cout <<"Error: Line "<<line<<": "<<e.what()<<endl;
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": " + e.what());
 	}
 }
 void AVMParser::assert(eOperandType type, std::string value, size_t line)
 {
 	(void)type;
 	(void)value;
-	(void)line;
+	try
+	{
+		opStack.pop();
+	}
+	catch (exception &e)
+	{
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": Pop on empty stack");
+	}
 }
 
 void AVMParser::pop(size_t line)
@@ -227,3 +241,19 @@ const std::map<std::string, AVMParser::paramFunc> AVMParser::_paramCmdMap = {
 const std::map<std::string, AVMParser::singleFunc> AVMParser::_singleCmdMap = {
 	{"pop", &AVMParser::pop}
 };
+
+/* ==== EXCEPTIONS ==== */
+
+AVMParser::AVMParseException::AVMParseException(){}
+AVMParser::AVMParseException::AVMParseException(std::string msg):_msg(msg) {}
+AVMParser::AVMParseException::AVMParseException(AVMParseException const &ref){*this = ref;}
+AVMParser::AVMParseException &AVMParser::AVMParseException::operator=(AVMParseException const &ref)
+{
+	exception::operator=(ref);
+	return *this;
+}
+AVMParser::AVMParseException::~AVMParseException() throw() {}
+const char* AVMParser::AVMParseException::what() const throw()
+{
+	return _msg.c_str();
+}
