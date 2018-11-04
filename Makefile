@@ -1,9 +1,11 @@
 NAME = avm
 
-HEADERS =	avmFuncs \
+HEADERS =	AVMParser \
 			defines \
 			eOperandType \
+			eLexemType \
 			IOperand \
+			LexemToken \
 			Operand \
 			OperandFactory
 
@@ -12,12 +14,13 @@ SRCDIR = ./sources
 HFILES = $(patsubst %, $(INCDIR)/%.hpp, $(HEADERS))
 
 FILENAMES =	main \
-			OperandFactory
+			OperandFactory \
+			AVMParser
 
 CFILES = $(patsubst %, $(SRCDIR)/%.cpp, $(FILENAMES))
 OFILES = $(patsubst %, $(ODIR)/%.o, $(FILENAMES))
 
-FLAGS = -Wall -Wextra -Werror 
+FLAGS =  -std=c++11 -Wall -Wextra -Werror 
 ODIR = ./obj
 
 BLACK = '\033[0;30m'

@@ -8,8 +8,6 @@
 #define cin std::cin
 #define endl std::endl
 #define exception std::exception
-#define max(x, y) x < y ? y : x
-#define min(x, y) x > y ? y : x
 
 typedef struct	s_data
 {

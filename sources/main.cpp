@@ -31,7 +31,7 @@ int main(void)
 	{		
 		cout <<"Error: "<< e.what() << endl;
 	}
-	getchar();
+	//getchar();
 	return 0;
 }
 /*std::ifstream t("file.txt");

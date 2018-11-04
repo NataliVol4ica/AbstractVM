@@ -19,14 +19,14 @@ private:
 	std::vector<std::string> Tokenize(std::string program, size_t line, int &errors);
 	std::vector<LexemToken> RecognizeLexems(std::vector<std::string> tokens);
 	//todo: check if needed
-	const std::regex _validRegEx = std::regex(
+	/*const std::regex _validRegEx = std::regex(
 		"\\A\\s*("
 		"((push|assert)\\s*("
 		"((int8|int16|int32)\\(-?\\d+\\))|"
 		"((float|double)\\(-?\\d+(.\\d+)?\\)))"
 		")|"
 		"pop|dump|add|sub|mul|div|mod|print|exit"
-		")\\s*\\Z");
+		")\\s*\\Z");*/
 	const std::regex _lexemRegEx = std::regex(
 		"\\s*("
 		"(;.*)|"
