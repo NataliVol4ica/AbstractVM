@@ -188,7 +188,7 @@ void AVMParser::assert(eOperandType type, std::string value, size_t line)
 {
 	(void)type;
 	(void)value;
-	(void)line;	
+	(void)line;
 }
 
 void AVMParser::pop(size_t line)
