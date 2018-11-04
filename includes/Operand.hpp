@@ -60,8 +60,8 @@ public:
 		long double b = stold(ref.toString());
 		long double c = a + b;		
 		if (maxType < Float)
-			return OperandFactory().createOperand(maxType, std::to_string((int)c));
-		return OperandFactory().createOperand(maxType, std::to_string(c));
+			return _of.createOperand(maxType, std::to_string((int)c));
+		return _of.createOperand(maxType, std::to_string(c));
 	}
 	IOperand const * operator-(IOperand const & ref) const
 	{
@@ -70,8 +70,8 @@ public:
 		long double b = stold(ref.toString());
 		long double c = a - b;
 		if (maxType < Float)
-			return OperandFactory().createOperand(maxType, std::to_string((int)c));
-		return OperandFactory().createOperand(maxType, std::to_string(c));
+			return _of.createOperand(maxType, std::to_string((int)c));
+		return _of.createOperand(maxType, std::to_string(c));
 	}
 	IOperand const * operator*(IOperand const & ref) const
 	{
@@ -80,8 +80,8 @@ public:
 		long double b = stold(ref.toString());
 		long double c = a * b;
 		if (maxType < Float)
-			return OperandFactory().createOperand(maxType, std::to_string((int)c));
-		return OperandFactory().createOperand(maxType, std::to_string(c));
+			return _of.createOperand(maxType, std::to_string((int)c));
+		return _of.createOperand(maxType, std::to_string(c));
 	}
 	IOperand const * operator/(IOperand const & ref) const
 	{
@@ -92,8 +92,8 @@ public:
 			throw OperationException("Division by zero");
 		long double c = a / b;
 		if (maxType < Float)
-			return OperandFactory().createOperand(maxType, std::to_string((int)c));
-		return OperandFactory().createOperand(maxType, std::to_string(c));
+			return _of.createOperand(maxType, std::to_string((int)c));
+		return _of.createOperand(maxType, std::to_string(c));
 	}
 	IOperand const * operator%(IOperand const & ref) const
 	{
@@ -104,8 +104,8 @@ public:
 			throw OperationException("Modulo by zero");
 		long double c = std::fmod(a, b);
 		if (maxType < Float)
-			return OperandFactory().createOperand(maxType, std::to_string((int)c));
-		return OperandFactory().createOperand(maxType, std::to_string(c));
+			return _of.createOperand(maxType, std::to_string((int)c));
+		return _of.createOperand(maxType, std::to_string(c));
 	}
 	//tools
 	std::string const & toString( void ) const
@@ -163,4 +163,8 @@ private:
 	eOperandType			_type;
 	T						_value;
 	std::string				_toString;
+	static const OperandFactory _of;
 };
+
+template <typename T>
+const OperandFactory Operand<T>::_of = OperandFactory();

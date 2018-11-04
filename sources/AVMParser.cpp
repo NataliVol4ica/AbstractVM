@@ -148,7 +148,6 @@ void AVMParser::Run(std::vector<LexemToken> tokens, size_t line)
 		(this->*_paramCmdMap.at(tokens[0].str))(RecognizeType(tokens[1].str), tokens[3].str, line);
 	else		
 		(this->*_singleCmdMap.at(tokens[0].str))(line);
-	(void)line;
 }
 eOperandType AVMParser::RecognizeType(std::string str)
 {
@@ -160,13 +159,16 @@ eOperandType AVMParser::RecognizeType(std::string str)
 		return Int32;
 	if (str == "float")
 		return Float;
-	return Double;
+	if (str == "double")
+		return Double;
+	return None;
 }
 
 /* ==== COMMANDS ==== */
 
 void AVMParser::push(eOperandType type, std::string value, size_t line)
 {
+	//opStack.push(OperandFactory().)
 	(void)type;
 	(void)value;
 	(void)line;
@@ -185,6 +187,7 @@ void AVMParser::pop(size_t line)
 
 /* ==== VARIABLES ==== */
 
+const OperandFactory AVMParser::_of = OperandFactory();
 const std::regex AVMParser::_lexemRegEx = std::regex(
 		"\\s*("
 		"(;.*)|"

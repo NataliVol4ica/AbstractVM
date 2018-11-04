@@ -44,5 +44,7 @@ private:
 	static const std::map<std::string, paramFunc > _paramCmdMap;
 	static const std::map<std::string, singleFunc> _singleCmdMap;
 
+	static const OperandFactory _of;
+
 	//todo: map {operation, function pointer} ?? two maps
 };

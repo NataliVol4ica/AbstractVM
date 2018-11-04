@@ -3,6 +3,7 @@
 
 enum eOperandType
 {
+	None,
 	Int8,
 	Int16,
 	Int32,

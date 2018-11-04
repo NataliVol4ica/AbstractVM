@@ -2,13 +2,12 @@
 #include "IOperand.hpp"
 #include "Operand.hpp"
 
-OperandFactory::func	OperandFactory::createFuncs[] =
-{
-	&OperandFactory::createInt8,
-	&OperandFactory::createInt16,
-	&OperandFactory::createInt32,
-	&OperandFactory::createFloat,
-	&OperandFactory::createDouble
+const std::map<eOperandType, OperandFactory::func> OperandFactory::_funcMap ={
+	{Int8, &OperandFactory::createInt8},
+	{Int16, &OperandFactory::createInt16},
+	{Int32, &OperandFactory::createInt32},
+	{Float, &OperandFactory::createFloat},
+	{Double, &OperandFactory::createDouble}
 };
 
 /* ======== CANONICAL ======== */
@@ -22,7 +21,7 @@ OperandFactory::~OperandFactory() {}
 
 IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value) const
 {
-	return (this->*createFuncs[type])(value);
+	return (this->*_funcMap.at(type))(value);
 }
 IOperand const * OperandFactory::createInt8(std::string const & value) const
 {

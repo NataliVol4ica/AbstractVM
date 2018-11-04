@@ -3,6 +3,7 @@
 
 #include "defines.hpp"
 #include "IOperand.hpp"
+#include <map>
 
 class OperandFactory
 {
@@ -48,7 +49,7 @@ private:
 	IOperand const * createDouble(std::string const & value) const;
 
 	typedef IOperand const* (OperandFactory::*func)(std::string const & value) const;
-	static func createFuncs[];
+	static const std::map<eOperandType, func> _funcMap;
 };
 
 	//todo: replace array with map?
