@@ -7,6 +7,7 @@
 //todo: log flag
 //todo: more funcs
 //todo: rm (void)-s
+//todo: add command size
 
 int main(void)
 
@@ -22,6 +23,8 @@ int main(void)
 		//prog.push_back("push int32(0) 0 ;cmnt laal");
 		//prog.push_back("push int8(42.3)");
 		prog.push_back("push int8(41)");
+		prog.push_back("dump");
+		prog.push_back("add");
 		prog.push_back("dump");
 		prog.push_back("exit");
 		AVMParser p = AVMParser();
@@ -43,6 +46,7 @@ int main(void)
 		cout <<"Error: "<< e->what() << endl;
 	}
 	//getchar();
+	system("leaks avm");
 	return 0;
 }
 

@@ -4,6 +4,16 @@
 
 AVMParser::AVMParser() :_toExit(false) {}
 
+AVMParser::~AVMParser()
+{
+	const IOperand *top;
+	while (opStack.size() > 0)
+	{
+		top = opStack.back();
+		delete(top);
+		opStack.pop_back();
+	}
+}
 /* ==== PARSING ==== */
 
 void AVMParser::Parse(std::vector<std::string> program)
@@ -192,16 +202,11 @@ void AVMParser::assert(eOperandType type, std::string value, size_t line)
 
 void AVMParser::pop(size_t line)
 {
-	try
-	{
-		const IOperand *top = opStack.back();
-		delete(top);
-		opStack.pop_back();
-	}
-	catch (exception &e)
-	{
+	if (opStack.size() == 0)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Pop on empty stack");
-	}
+	const IOperand *top = opStack.back();
+	delete(top);
+	opStack.pop_back();
 }
 
 void AVMParser::dump(size_t line)
@@ -213,51 +218,130 @@ void AVMParser::dump(size_t line)
 }
 void AVMParser::add(size_t line)
 {
-	const IOperand *a, *b;
-	try
-	{
-		a = opStack.back();
-		opStack.pop_back();
-		b = opStack.back();
-		opStack.pop_back();
-	}	
-	catch (exception &e)
-	{
+	if (opStack.size() < 2)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
-	}
+	const IOperand *a, *b;
+	a = opStack.back();
+	opStack.pop_back();
+	b = opStack.back();
+	opStack.pop_back();
 	try
 	{	
 		opStack.push_back(*a + *b);
 	}	
 	catch (exception &e)
 	{
+		delete(a);
+		delete(b);
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": " + e.what());
 	}
+	delete(a);
+	delete(b);
 }
 
 void AVMParser::sub(size_t line)
 {
-	(void)line;
+	if (opStack.size() < 2)
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+	const IOperand *a, *b;
+	a = opStack.back();
+	opStack.pop_back();
+	b = opStack.back();
+	opStack.pop_back();
+	try
+	{	
+		opStack.push_back(*a - *b);
+	}	
+	catch (exception &e)
+	{
+		delete(a);
+		delete(b);
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": " + e.what());
+	}
+	delete(a);
+	delete(b);
 }
 
 void AVMParser::mul(size_t line)
 {
-	(void)line;
+	if (opStack.size() < 2)
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+	const IOperand *a, *b;
+	a = opStack.back();
+	opStack.pop_back();
+	b = opStack.back();
+	opStack.pop_back();
+	try
+	{	
+		opStack.push_back(*a * *b);
+	}	
+	catch (exception &e)
+	{
+		delete(a);
+		delete(b);
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": " + e.what());
+	}
+	delete(a);
+	delete(b);
 }
 
 void AVMParser::div(size_t line)
 {
-	(void)line;
+	if (opStack.size() < 2)
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+	const IOperand *a, *b;
+	a = opStack.back();
+	opStack.pop_back();
+	b = opStack.back();
+	opStack.pop_back();
+	try
+	{	
+		opStack.push_back(*a / *b);
+	}	
+	catch (exception &e)
+	{
+		delete(a);
+		delete(b);
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": " + e.what());
+	}
+	delete(a);
+	delete(b);
 }
 
 void AVMParser::mod(size_t line)
 {
-	(void)line;
+	if (opStack.size() < 2)
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+	const IOperand *a, *b;
+	a = opStack.back();
+	opStack.pop_back();
+	b = opStack.back();
+	opStack.pop_back();
+	try
+	{	
+		opStack.push_back(*a % *b);
+	}	
+	catch (exception &e)
+	{
+		delete(a);
+		delete(b);
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": " + e.what());
+	}
+	delete(a);
+	delete(b);
 }
 
 void AVMParser::print(size_t line)
 {
-	(void)line;
+	const IOperand *top;
+	try
+	{
+		top = opStack.back();
+	}
+	catch (exception &e)
+	{
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": Print on empty stack");
+	}
 }
 
 void AVMParser::exit(size_t line)

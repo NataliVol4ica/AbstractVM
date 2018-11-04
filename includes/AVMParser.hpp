@@ -19,6 +19,7 @@ class AVMParser
 {
 public:
 	AVMParser();
+	~AVMParser();
 	void Parse(std::vector<std::string> program);
 	class AVMParseException : public exception
 	{
