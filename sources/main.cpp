@@ -56,7 +56,7 @@ int main(void)
 	{		
 		cout <<"Error: "<< e->what() << endl;
 	}
-	//getchar();
+	getchar();
 	//system("leaks avm");
 	return 0;
 }

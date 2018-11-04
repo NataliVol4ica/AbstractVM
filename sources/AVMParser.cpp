@@ -19,15 +19,15 @@ AVMParser::~AVMParser()
 void AVMParser::Parse(std::vector<std::string> program)
 {
 	int errors = 0;
-	std::vector<std::string> stringTokens [program.size()];
-	std::vector<LexemToken> lTokens [program.size()];
+	std::vector<std::vector<std::string>> stringTokens;
+	std::vector<std::vector<LexemToken>> lTokens;
 	for (size_t i = 0; i < program.size(); i++)
-		stringTokens[i] = Tokenize(program[i], i + 1, errors);
+		stringTokens.push_back(Tokenize(program[i], i + 1, errors));
 	if (errors != 0)		
 		throw AVMParseException("Shutting down: Program has " + std::to_string(errors) + " lexical errors");
 	for (size_t i = 0; i < program.size(); i++)
 	{
-		lTokens[i] = RecognizeLexems(stringTokens[i]);
+		lTokens.push_back(RecognizeLexems(stringTokens[i]));
 		SyntaxAnal(lTokens[i], i + 1, errors);
 	}
 	if (errors != 0)		
@@ -161,12 +161,17 @@ void AVMParser::Run(std::vector<LexemToken> tokens, size_t line)
 	if (tokens.size() == 0 || tokens[0].type == comment)
 		return;
 	if (tokens[0].type == paramOp)
-		(this->*_paramCmdMap.at(tokens[0].str))(RecognizeType(tokens[1].str), tokens[3].str, line);
-	else		
+	{
+		eOperandType type = RecognizeType(tokens[1].str);
+		paramFunc pf = _paramCmdMap.at(tokens[0].str);
+		(this->*pf)(type, tokens[3].str, line);
+	}
+	else
 		(this->*_singleCmdMap.at(tokens[0].str))(line);
 }
 eOperandType AVMParser::RecognizeType(std::string str)
 {
+	//todo: replace with map
 	if (str == "int8")
 		return Int8;
 	if (str == "int16")
@@ -208,7 +213,6 @@ void AVMParser::pop(size_t line)
 	delete(top);
 	opStack.pop_back();
 }
-
 void AVMParser::dump(size_t line)
 {
 	for (size_t i = 0; i < opStack.size(); i++)
@@ -238,7 +242,6 @@ void AVMParser::add(size_t line)
 	delete(a);
 	delete(b);
 }
-
 void AVMParser::sub(size_t line)
 {
 	if (opStack.size() < 2)
@@ -261,7 +264,6 @@ void AVMParser::sub(size_t line)
 	delete(a);
 	delete(b);
 }
-
 void AVMParser::mul(size_t line)
 {
 	if (opStack.size() < 2)
@@ -284,7 +286,6 @@ void AVMParser::mul(size_t line)
 	delete(a);
 	delete(b);
 }
-
 void AVMParser::div(size_t line)
 {
 	if (opStack.size() < 2)
@@ -307,7 +308,6 @@ void AVMParser::div(size_t line)
 	delete(a);
 	delete(b);
 }
-
 void AVMParser::mod(size_t line)
 {
 	if (opStack.size() < 2)
@@ -330,29 +330,25 @@ void AVMParser::mod(size_t line)
 	delete(a);
 	delete(b);
 }
-
 void AVMParser::print(size_t line)
 {
 	if (opStack.size() == 0)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Print on empty stack");
 	const IOperand *top = opStack.back();
-	if (top->getType() !=Int8)
+	if (top->getType() != Int8)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": The top element is not Int8");
 	cout<<(char)stoi(top->toString())<<endl;
 }
-
 void AVMParser::exit(size_t line)
 {
 	_toExit = true;
 	(void)line;
 }
-
 void AVMParser::size(size_t line)
 {
 	cout<<opStack.size()<<endl;
 	(void)line;
 }
-
 void AVMParser::clean(size_t line)
 {
 	const IOperand *top;

@@ -17,12 +17,12 @@ class Operand : public IOperand
 {
 public:
 	//Canonical
-	Operand<T>(void): _value(0)
+	Operand<T>(void) : _value(0)
 	{
 		defineTType();
 		setStringValue();
 	}
-	Operand<T>(T const value): _value(value)
+	Operand<T>(T const value) : _value(value)
 	{
 		defineTType();
 		setStringValue();
@@ -32,15 +32,15 @@ public:
 		this->_type = ref.getType();
 		this->_value = ref.getValue();
 		this->_toString = ref.toString();
-	}	
+	}
 	Operand<T> &operator=(Operand<T> const &ref)
 	{
 		this->_value = ref.getValue();
 		this->_toString = ref.toString();
 	}
-	~Operand<T>(){}
+	~Operand<T>() {}
 	//getters
-	int getPrecision( void ) const
+	int getPrecision(void) const
 	{
 		return static_cast<int>(_type);
 	}
@@ -58,7 +58,7 @@ public:
 		eOperandType maxType = getMaxType(*this, ref);
 		long double a = _value;
 		long double b = stold(ref.toString());
-		long double c = a + b;		
+		long double c = a + b;
 		if (maxType < Float)
 			return _of.createOperand(maxType, std::to_string((int)c));
 		return _of.createOperand(maxType, std::to_string(c));
@@ -108,7 +108,7 @@ public:
 		return _of.createOperand(maxType, std::to_string(c));
 	}
 	//tools
-	std::string const & toString( void ) const
+	std::string const & toString(void) const
 	{
 		return _toString;
 	}
@@ -122,9 +122,9 @@ public:
 	class OperationException : public exception
 	{
 	public:
-		OperationException(){}
-		OperationException(std::string msg): _msg(msg) {}
-		OperationException(OperationException const &ref) {*this = ref;}
+		OperationException() {}
+		OperationException(std::string msg) : _msg(msg) {}
+		OperationException(OperationException const &ref) { *this = ref; }
 		OperationException &operator=(OperationException const &ref)
 		{
 			exception::operator=(ref);
@@ -143,20 +143,24 @@ public:
 private:
 	void defineTType(void)
 	{
+		//todo: add map
 		std::string typeName = typeid(T).name();
-		if (typeName == "c")
+		if (typeName == typeid(char).name())
 			_type = Int8;
-		else if (typeName == "s")
+		else if (typeName == typeid(short).name())
 			_type = Int16;
-		else if (typeName == "i")
+		else if (typeName == typeid(int).name())
 			_type = Int32;
-		else if (typeName == "f")
+		else if (typeName == typeid(float).name())
 			_type = Float;
-		else 
+		else if (typeName == typeid(double).name())
 			_type = Double;
+		else
+			//todo: custom exception
+			throw new exception(("unknown type " + typeName).c_str());
 	}
 	void setStringValue(void)
-	{		
+	{
 		_toString = std::to_string(_value);
 	}
 
