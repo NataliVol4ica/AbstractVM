@@ -26,6 +26,8 @@ int main(void)
 		prog.push_back("dump");
 		prog.push_back("add");
 		prog.push_back("dump");
+		prog.push_back("push int8(-2)");
+		prog.push_back("print");
 		prog.push_back("exit");
 		AVMParser p = AVMParser();
 		p.Parse(prog);
@@ -46,7 +48,7 @@ int main(void)
 		cout <<"Error: "<< e->what() << endl;
 	}
 	//getchar();
-	system("leaks avm");
+	//system("leaks avm");
 	return 0;
 }
 

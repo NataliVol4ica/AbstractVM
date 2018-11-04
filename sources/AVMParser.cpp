@@ -333,15 +333,12 @@ void AVMParser::mod(size_t line)
 
 void AVMParser::print(size_t line)
 {
-	const IOperand *top;
-	try
-	{
-		top = opStack.back();
-	}
-	catch (exception &e)
-	{
+	if (opStack.size() == 0)
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": Print on empty stack");
-	}
+	const IOperand *top = opStack.back();
+	if (top->getType() !=Int8)
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": The top element is not Int8");
+	cout<<(char)stoi(top->toString())<<endl;
 }
 
 void AVMParser::exit(size_t line)
