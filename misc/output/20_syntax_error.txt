@@ -1,2 +1,0 @@
-Line 26: Syntax error: line has to start with command
-Shutting down: Program has 1 syntax errors

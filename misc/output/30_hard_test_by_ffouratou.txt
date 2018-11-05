@@ -1,2 +1,0 @@
-Line 3: unknow lexem "fE"
-Shutting down: Program has 1 lexical errors
