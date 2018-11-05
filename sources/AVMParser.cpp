@@ -43,11 +43,7 @@ void AVMParser::Parse(std::vector<std::string> program)
 			break;
 	}
 	if (!_toExit)
-	{
-		cout <<"throwing"<<endl;
-		throw AVMParseException("Error: Program is missing exit");
-	}
-	
+		throw AVMParseException("Error: Program is missing exit");	
 }
 std::vector<std::string> AVMParser::Tokenize(std::string program, size_t line, int &errors)
 {
@@ -217,7 +213,7 @@ void AVMParser::dump(size_t line)
 {
 	for (int i = opStack.size() - 1; i >= 0; i--)
 	{
-		opStack[i]->printValue();
+		cout <<opStack[i]->toString();
 		cout << endl;
 	}
 	(void)line;
@@ -225,7 +221,8 @@ void AVMParser::dump(size_t line)
 void AVMParser::add(size_t line)
 {
 	if (opStack.size() < 2)
-		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+		throw AVMParseException("Error: Line " + std::to_string(line) + 
+			": Cannot add less than 2 operands in the stack");
 	const IOperand *a, *b;
 	b = opStack.back();
 	opStack.pop_back();
@@ -247,7 +244,8 @@ void AVMParser::add(size_t line)
 void AVMParser::sub(size_t line)
 {
 	if (opStack.size() < 2)
-		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+		throw AVMParseException("Error: Line " + std::to_string(line) + 
+			": Cannot sub less than 2 operands in the stack");
 	const IOperand *a, *b;
 	b = opStack.back();
 	opStack.pop_back();
@@ -269,7 +267,8 @@ void AVMParser::sub(size_t line)
 void AVMParser::mul(size_t line)
 {
 	if (opStack.size() < 2)
-		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+		throw AVMParseException("Error: Line " + std::to_string(line) + 
+			": Cannot mul less than 2 operands in the stack");
 	const IOperand *a, *b;
 	b = opStack.back();
 	opStack.pop_back();
@@ -291,7 +290,8 @@ void AVMParser::mul(size_t line)
 void AVMParser::div(size_t line)
 {
 	if (opStack.size() < 2)
-		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+		throw AVMParseException("Error: Line " + std::to_string(line) + 
+			": Cannot div less than 2 operands in the stack");
 	const IOperand *a, *b;
 	b = opStack.back();
 	opStack.pop_back();
@@ -313,7 +313,8 @@ void AVMParser::div(size_t line)
 void AVMParser::mod(size_t line)
 {
 	if (opStack.size() < 2)
-		throw AVMParseException("Error: Line " + std::to_string(line) + ": Less than 2 operands in the stack");
+		throw AVMParseException("Error: Line " + std::to_string(line) + 
+			": Cannot mod less than 2 operands in the stack");
 	const IOperand *a, *b;
 	b = opStack.back();
 	opStack.pop_back();

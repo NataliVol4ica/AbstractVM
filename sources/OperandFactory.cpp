@@ -31,7 +31,7 @@ IOperand const * OperandFactory::createInt8(std::string const & value) const
 		stoiVal = stoi(value);
 		if (stoiVal > INT8_MAX || stoiVal < INT8_MIN)
 			throw OutOfRangeException(value, "Int8");
-		return new Operand<char>(static_cast<char>(stoiVal), value);
+		return new Operand<char>(static_cast<char>(stoiVal));
 	}
 	catch (const std::out_of_range&)
 	{
@@ -50,7 +50,7 @@ IOperand const * OperandFactory::createInt16(std::string const & value) const
 		stoiVal = stoi(value);
 		if (stoiVal > INT16_MAX || stoiVal < INT16_MIN)
 			throw OutOfRangeException(value, "Int16");
-		return new Operand<short>(static_cast<short>(stoiVal), value);
+		return new Operand<short>(static_cast<short>(stoiVal));
 	}
 	catch (const std::out_of_range&)
 	{
@@ -67,7 +67,7 @@ IOperand const * OperandFactory::createInt32(std::string const & value) const
 	try
 	{
 		stoiVal = stoi(value);
-		return new Operand<int>(stoiVal, value);
+		return new Operand<int>(stoiVal);
 	}
 	catch (const std::out_of_range&)
 	{
@@ -83,8 +83,8 @@ IOperand const * OperandFactory::createFloat(std::string const & value) const
 	float stofVal;
 	try
 	{
-		stofVal = stof(value);
-		return new Operand<float>(stofVal, value);
+		stofVal = std::stof(value);	
+		return new Operand<float>(stofVal);
 	}
 	catch (const std::out_of_range&)
 	{
@@ -101,7 +101,7 @@ IOperand const * OperandFactory::createDouble(std::string const & value) const
 	try
 	{
 		stodVal = stod(value);
-		return new Operand<double>(stodVal, value);
+		return new Operand<double>(stodVal);
 	}
 	catch (const std::out_of_range&)
 	{		

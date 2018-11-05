@@ -7,6 +7,7 @@
 #include <fstream> 
 
 //todo: more funcs
+//todo: rm make tests
 
 void printProg(std::string name, std::vector<std::string> program)
 {
@@ -85,6 +86,7 @@ void readFromFiles(const char *fileName)
 
 int main(int ac, char **av)
 {	
+	//cout.precision(17);
 	if (ac == 1)
 		readFromStd();
 	else
