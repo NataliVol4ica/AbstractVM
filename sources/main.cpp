@@ -7,8 +7,6 @@
 //todo: log flag
 //todo: more funcs
 //todo: rm (void)-s
-//todo: add command size
-//todo: add command clean
 //todo: print the program with numerated lines
 
 int main(void)

@@ -10,8 +10,6 @@
 #include <cfloat>
 #include <cmath>
 
-//todo: tons of exceptions
-
 template <typename T>
 class Operand : public IOperand
 {
@@ -143,21 +141,22 @@ public:
 private:
 	void defineTType(void)
 	{
-		//todo: add map
-		std::string typeName = typeid(T).name();
-		if (typeName == typeid(char).name())
-			_type = Int8;
-		else if (typeName == typeid(short).name())
-			_type = Int16;
-		else if (typeName == typeid(int).name())
-			_type = Int32;
-		else if (typeName == typeid(float).name())
-			_type = Float;
-		else if (typeName == typeid(double).name())
-			_type = Double;
-		else
-			//todo: custom exception
-			throw new exception(("unknown type " + typeName).c_str());
+		static const std::map<std::string, eOperandType> _strToEOpMap =
+		{
+			{ typeid(char).name(), Int8 },
+			{ typeid(short).name(), Int16 },
+			{ typeid(int).name(), Int32 },
+			{ typeid(float).name(), Float },
+			{ typeid(double).name(), Double }
+		};
+		try
+		{
+			_type = _strToEOpMap.at(typeid(T).name());
+		}
+		catch (exception &)
+		{
+			throw new exception(("unknown type " + std::string(typeid(T).name())).c_str());
+		}
 	}
 	void setStringValue(void)
 	{

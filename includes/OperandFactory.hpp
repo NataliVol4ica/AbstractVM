@@ -51,5 +51,3 @@ private:
 	typedef IOperand const* (OperandFactory::*func)(std::string const & value) const;
 	static const std::map<eOperandType, func> _funcMap;
 };
-
-	//todo: replace array with map?

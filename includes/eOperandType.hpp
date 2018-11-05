@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <map>
+
 enum eOperandType
 {
 	None,

@@ -12,7 +12,6 @@
 #include <stack>
 
 //todo: canonical
-//todo: free stack in destructor
 //todo: think of making class static !!!!
 
 class AVMParser
