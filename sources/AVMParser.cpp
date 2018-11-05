@@ -81,7 +81,6 @@ std::vector<LexemToken> AVMParser::RecognizeLexems(std::vector<std::string> toke
 		}
 		catch (exception)
 		{
-			//cout << "\"" << tokens[i] << "\"" << endl;
 			if (tokens[i][0] == ';')
 				lTokens.push_back(LexemToken(tokens[i], comment));
 			else if (tokens[i].find(".") != std::string::npos)
@@ -201,7 +200,7 @@ void AVMParser::assert(eOperandType type, std::string value, size_t line)
 	if (!top->isEqual(cmp))
 	{
 		delete cmp;
-		throw AVMParseException("Error: Line " + std::to_string(line) + ": assert failed");
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": Assert failed");
 	}
 	delete cmp;
 }
@@ -368,7 +367,21 @@ void AVMParser::clean(size_t line)
 	}
 	(void)line;
 }
-
+void AVMParser::type(size_t line)
+{
+	static const std::map<eOperandType, std::string> _eOpToStrMap =
+	{
+		{ Int8, "Int8" },
+		{ Int16, "Int16" },
+		{ Int32, "Int32" },
+		{ Float, "Float" },
+		{ Double, "Double" }
+	};
+	if (opStack.size() == 0)
+		throw AVMParseException("Error: Line " + std::to_string(line) + ": Type on empty stack");
+	const IOperand *top = opStack.back();
+	cout<<_eOpToStrMap.at(top->getType())<<endl;
+}
 /* ==== VARIABLES ==== */
 
 const OperandFactory AVMParser::_of = OperandFactory();
@@ -376,7 +389,7 @@ const std::regex AVMParser::_lexemRegEx = std::regex(
 		"\\s*("
 		"(;.*)|"
 		"push |assert |"
-		"pop|dump|add|sub|mul|div|mod|print|exit|size|clean|"
+		"pop|dump|add|sub|mul|div|mod|print|exit|size|clean|type|"
 		"int8|int16|int32|float|double|"
 		"\\(|\\)|"
 		"[+-]?\\d+(.\\d+)?"
@@ -395,6 +408,7 @@ const std::map<std::string, eLexemType> AVMParser::_lexemMap = {
 	{ "exit", singleOp },
 	{ "size", singleOp },
 	{ "clean", singleOp },
+	{ "type", singleOp },
 	{ "int8", paramIntType },
 	{ "int16", paramIntType },
 	{ "int32", paramIntType },
@@ -418,7 +432,8 @@ const std::map<std::string, AVMParser::singleFunc> AVMParser::_singleCmdMap = {
 	{"print", &AVMParser::print},
 	{"exit", &AVMParser::exit},
 	{"size", &AVMParser::size},
-	{"clean", &AVMParser::clean}
+	{"clean", &AVMParser::clean},
+	{"type", &AVMParser::type}
 };
 
 /* ==== EXCEPTIONS ==== */

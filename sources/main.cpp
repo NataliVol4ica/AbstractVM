@@ -6,19 +6,16 @@
 #include <iomanip>
 #include <fstream> 
 
-//todo: more funcs ?
-//todo: clean up commented code and todos
-
 #define TOPRINTPROG 1
 
 void printProg(std::string name, std::vector<std::string> program)
 {
 	int width = std::to_string(program.size() + 1).length();
-	cout<<"================="<<endl;
-	cout << "\t" <<name<<endl;
+	cout<<"\033[1;32m >>> ================="<<endl;
+	cout << "\033[1;34m\t" <<name << "\033[1;30m"<<endl;
 	for (size_t i = 0; i < program.size(); i++)
-		cout << std::setfill('0') << std::setw(width) << i + 1 << " " << program[i] << endl;
-	cout<<"================="<<endl;
+		cout << "   " << std::setfill('0') << std::setw(width) << i + 1 << " " << program[i] << endl;
+	cout<<"\033[1;32m <<< =================\033[0m"<<endl;
 }
 
 void readFromStd(void)
@@ -30,9 +27,9 @@ void readFromStd(void)
 	while (true)
 	{
 		std::getline(cin, rd);
+		program.push_back(rd);
 		if (std::regex_match(rd, eoReadRegEx))
 			break;
-		program.push_back(rd);
 	}
 	if (TOPRINTPROG)
 		printProg("Program from std", program);

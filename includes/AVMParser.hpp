@@ -55,6 +55,7 @@ private:
 	void exit(size_t line);
 	void size(size_t line); //prints current stack size
 	void clean(size_t line); //cleans the whole stack
+	void type(size_t line); //prints top element type
 
 	/* vars */
 
