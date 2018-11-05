@@ -161,11 +161,11 @@ private:
 	void setStringValue(void)
 	{
 		_toString = std::to_string(_value);
-		if (_toString.find(".") != std::string::npos)
+		if (_toString.find(".") == std::string::npos)
 			return;
 		_toString.erase(_toString.find_last_not_of("0") + 1);
 		if (_toString[_toString.length()-1]=='.')
-			_toString.erase(_toString.end()-1,_toString.end());
+			_toString.erase(_toString.end()-1,_toString.end());		
 	}
 
 	eOperandType			_type;

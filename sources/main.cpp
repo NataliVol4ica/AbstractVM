@@ -9,6 +9,8 @@
 //todo: more funcs
 //todo: rm make tests
 
+#define TOPRINTPROG 0
+
 void printProg(std::string name, std::vector<std::string> program)
 {
 	int width = std::to_string(program.size() + 1).length();
@@ -32,7 +34,8 @@ void readFromStd(void)
 			break;
 		program.push_back(rd);
 	}
-	printProg("Program from std", program);
+	if (TOPRINTPROG)
+		printProg("Program from std", program);
 	try
 	{
 		p.Parse(program);
@@ -68,7 +71,8 @@ void readFromFiles(const char *fileName)
 		if (file.eof())
 			break;
 	}
-	printProg("Program from " + std::string(fileName), program);	
+	if (TOPRINTPROG)
+		printProg("Program from " + std::string(fileName), program);	
 	try
 	{
 		p.Parse(program);
