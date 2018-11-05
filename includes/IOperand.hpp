@@ -9,6 +9,7 @@ class IOperand
 public:
 	virtual int getPrecision( void ) const = 0; // Precision of the type of the instance
 	virtual eOperandType getType( void ) const = 0; // Type of the instance
+	virtual void printValue( void ) const = 0; // Prints instance value
 
 	virtual IOperand const * operator+( IOperand const & rhs ) const = 0; // Sum
 	virtual IOperand const * operator-( IOperand const & rhs ) const = 0; // Difference

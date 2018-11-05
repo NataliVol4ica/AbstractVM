@@ -201,7 +201,7 @@ void AVMParser::push(eOperandType type, std::string value, size_t line)
 void AVMParser::assert(eOperandType type, std::string value, size_t line)
 {
 	const IOperand *top = opStack.back();
-	if (top->getType() != type || top->toString() != value)
+	if (top->getType() != type || stod(top->toString()) != stod(value))
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": assert failed");
 }
 
@@ -215,10 +215,12 @@ void AVMParser::pop(size_t line)
 }
 void AVMParser::dump(size_t line)
 {
-	for (size_t i = 0; i < opStack.size(); i++)
-		cout <<opStack[i]->toString()<<endl;
+	for (int i = opStack.size() - 1; i >= 0; i--)
+	{
+		opStack[i]->printValue();
+		cout << endl;
+	}
 	(void)line;
-	//todo: think of exception?
 }
 void AVMParser::add(size_t line)
 {
@@ -390,8 +392,8 @@ const std::map<std::string, eLexemType> AVMParser::_lexemMap = {
 	{ "int8", paramIntType },
 	{ "int16", paramIntType },
 	{ "int32", paramIntType },
-	{ "Float", paramFracType },
-	{ "Double", paramFracType },
+	{ "float", paramFracType },
+	{ "double", paramFracType },
 	{"(", oBr},
 	{")", cBr}
 	};

@@ -20,10 +20,9 @@ public:
 		defineTType();
 		setStringValue();
 	}
-	Operand<T>(T const value) : _value(value)
+	Operand<T>(T const value, std::string const str) : _value(value), _toString(str)
 	{
 		defineTType();
-		setStringValue();
 	}
 	Operand<T>(Operand<T> const &ref)
 	{
@@ -109,6 +108,10 @@ public:
 	std::string const & toString(void) const
 	{
 		return _toString;
+	}
+	void printValue(void) const
+	{
+		cout<<_value;
 	}
 	eOperandType getMaxType(Operand<T> const &ref1, IOperand const &ref2) const
 	{
