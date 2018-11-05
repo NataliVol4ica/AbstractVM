@@ -155,7 +155,6 @@ void AVMParser::SyntaxAnal(std::vector<LexemToken> lTokens, size_t line, int &er
 		{			
 			errors++;
 			cout << "Line "<<line<<": Syntax error: line has to start with command" <<endl;
-			//todo: process string starting of something not being a comment
 		}
 	}
 }
@@ -175,18 +174,15 @@ void AVMParser::Run(std::vector<LexemToken> tokens, size_t line)
 }
 eOperandType AVMParser::RecognizeType(std::string str)
 {
-	//todo: replace with map
-	if (str == "int8")
-		return Int8;
-	if (str == "int16")
-		return Int16;
-	if (str == "int32")
-		return Int32;
-	if (str == "float")
-		return Float;
-	if (str == "double")
-		return Double;
-	return None;
+	static const std::map<std::string, eOperandType> _strToEOpMap =
+	{
+		{ "int8", Int8 },
+		{ "int16", Int16 },
+		{ "int32", Int32 },
+		{ "float", Float },
+		{ "double", Double }
+	};
+	return _strToEOpMap.at(str);
 }
 
 /* ==== COMMANDS ==== */

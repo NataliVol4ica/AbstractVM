@@ -24,7 +24,26 @@ void readFromStd(void)
 	std::vector<std::string> program;
 	std::string rd;
 	AVMParser p = AVMParser();
-	
+	while (true)
+	{
+		std::getline(cin, rd);
+		if (std::regex_match(rd, eoReadRegEx))
+			break;
+		program.push_back(rd);
+	}
+	printProg("Program from std", program);
+	try
+	{
+		p.Parse(program);
+	}
+	catch(exception &e)
+	{		
+		cout << e.what() << endl;
+	}
+	catch(exception *e)
+	{		
+		cout <<"Error: "<< e->what() << endl;
+	}
 }
 
 void readFromFiles(const char *fileName)
@@ -35,6 +54,7 @@ void readFromFiles(const char *fileName)
 		cout<<"================="<<endl;
 		cout<<"Error: can't open file "<<fileName<<endl;
 		cout<<"================="<<endl;
+		file.close();
 		return;
 	}
 	std::vector<std::string> program;
@@ -47,7 +67,7 @@ void readFromFiles(const char *fileName)
 		if (file.eof())
 			break;
 	}
-		printProg("Program from " + std::string(fileName), program);	
+	printProg("Program from " + std::string(fileName), program);	
 	try
 	{
 		p.Parse(program);
@@ -73,10 +93,3 @@ int main(int ac, char **av)
 	//system("leaks avm");
 	return 0;
 }
-
-/*std::ifstream t("file.txt");
-std::stringstream buffer;
-buffer << t.rdbuf();
-
-Now the contents of "file.txt" are available in a string as buffer.str().*/
-//read from std while cin does not match ";;.*"

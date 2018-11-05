@@ -11,8 +11,6 @@
 #include <map>
 #include <stack>
 
-//todo: canonical
-
 class AVMParser
 {
 public:
