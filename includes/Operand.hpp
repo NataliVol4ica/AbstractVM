@@ -117,6 +117,14 @@ public:
 		else
 			cout<<_value;
 	}
+	bool isEqual(const IOperand *cmp) const
+	{
+		if (_type != cmp->getType())
+			return false;
+		if (_toString != cmp->toString())
+			return false;
+		return true;
+	}
 	eOperandType getMaxType(Operand<T> const &ref1, IOperand const &ref2) const
 	{
 		if (ref1.getPrecision() > ref2.getPrecision())

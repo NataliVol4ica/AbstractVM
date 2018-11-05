@@ -196,9 +196,14 @@ void AVMParser::push(eOperandType type, std::string value, size_t line)
 }
 void AVMParser::assert(eOperandType type, std::string value, size_t line)
 {
+	const IOperand *cmp = OperandFactory().createOperand(type, value);
 	const IOperand *top = opStack.back();
-	if (top->getType() != type || stod(top->toString()) != stod(value))
+	if (!top->isEqual(cmp))
+	{
+		delete cmp;
 		throw AVMParseException("Error: Line " + std::to_string(line) + ": assert failed");
+	}
+	delete cmp;
 }
 
 void AVMParser::pop(size_t line)
