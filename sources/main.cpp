@@ -1,50 +1,56 @@
 #include "defines.hpp"
 #include "AVMParser.hpp"
 #include <stdio.h>
+#include <regex>
 #include <vector>
+#include <iomanip>
+#include <fstream> 
 
-//todo: canonic form
-//todo: log flag
 //todo: more funcs
-//todo: rm (void)-s
-//todo: print the program with numerated lines
 
-int main(void)
+void printProg(std::string name, std::vector<std::string> program)
+{
+	int width = std::to_string(program.size() + 1).length();
+	cout<<"================="<<endl;
+	cout << "\t" <<name<<endl;
+	for (size_t i = 0; i < program.size(); i++)
+		cout << std::setfill('0') << std::setw(width) << i + 1 << " " << program[i] << endl;
+	cout<<"================="<<endl;
+}
 
-{	
+void readFromStd(void)
+{
+	const std::regex eoReadRegEx("\\s*;;\\s*");
+	std::vector<std::string> program;
+	std::string rd;
+	AVMParser p = AVMParser();
+	
+}
+
+void readFromFiles(const char *fileName)
+{
+	std::ifstream file(fileName);
+	if(file.fail())
+	{
+		cout<<"================="<<endl;
+		cout<<"Error: can't open file "<<fileName<<endl;
+		cout<<"================="<<endl;
+		return;
+	}
+	std::vector<std::string> program;
+	std::string rd;
+	AVMParser p = AVMParser();
+	while (true)
+	{
+		std::getline(file, rd);
+		program.push_back(rd);
+		if (file.eof())
+			break;
+	}
+		printProg("Program from " + std::string(fileName), program);	
 	try
 	{
-		std::vector<std::string> prog;
-		prog.push_back("push int32(42);cmnt push");
-		prog.push_back("");
-		//prog.push_back("nekotorii musor");
-		//prog.push_back("int32(8)");
-		//prog.push_back("eshemusorpush int32(0)");
-		//prog.push_back("push int32(0) 0 ;cmnt laal");
-		//prog.push_back("push int8(42.3)");
-		prog.push_back("push int8(41)");
-		prog.push_back("dump");
-		prog.push_back("add");
-		prog.push_back("dump");
-		prog.push_back("push int8(-2)");
-		prog.push_back("print");
-		prog.push_back("size");
-		prog.push_back("clean");
-		//prog.push_back("pop");
-		prog.push_back("push int8(2)");
-		prog.push_back("push int8(1)");
-		prog.push_back("sub");
-		prog.push_back("dump");
-		prog.push_back("exit");
-		AVMParser p = AVMParser();
-		p.Parse(prog);
-
-	/*	OperandFactory of = OperandFactory();
-		const IOperand *a = of.createOperand(Int8, "gdgdf");
-		const IOperand *b = of.createOperand(Int8, "1");
-		const IOperand *c =  *a + *b;
-		cout << c->toString() << endl;
-	*/
+		p.Parse(program);
 	}
 	catch(exception &e)
 	{		
@@ -54,7 +60,16 @@ int main(void)
 	{		
 		cout <<"Error: "<< e->what() << endl;
 	}
-	getchar();
+	file.close();
+}
+
+int main(int ac, char **av)
+{	
+	if (ac == 1)
+		readFromStd();
+	else
+		for (int i = 1; i < ac; i++)
+			readFromFiles(av[i]);
 	//system("leaks avm");
 	return 0;
 }

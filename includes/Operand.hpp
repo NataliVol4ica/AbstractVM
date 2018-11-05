@@ -149,14 +149,7 @@ private:
 			{ typeid(float).name(), Float },
 			{ typeid(double).name(), Double }
 		};
-		try
-		{
-			_type = _strToEOpMap.at(typeid(T).name());
-		}
-		catch (exception &)
-		{
-			throw new exception(("unknown type " + std::string(typeid(T).name())).c_str());
-		}
+		_type = _strToEOpMap.at(typeid(T).name());
 	}
 	void setStringValue(void)
 	{

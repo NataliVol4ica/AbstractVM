@@ -14,6 +14,10 @@ AVMParser::~AVMParser()
 		opStack.pop_back();
 	}
 }
+
+AVMParser::AVMParser(const AVMParser &){}
+AVMParser& AVMParser::operator=(const AVMParser &){	return *this; }
+
 /* ==== PARSING ==== */
 
 void AVMParser::Parse(std::vector<std::string> program)
@@ -367,7 +371,8 @@ const OperandFactory AVMParser::_of = OperandFactory();
 const std::regex AVMParser::_lexemRegEx = std::regex(
 		"\\s*("
 		"(;.*)|"
-		"push|assert|pop|dump|add|sub|mul|div|mod|print|exit|size|clean|"
+		"push |assert |"
+		"pop|dump|add|sub|mul|div|mod|print|exit|size|clean|"
 		"int8|int16|int32|float|double|"
 		"\\(|\\)|"
 		"[+-]?\\d+(.\\d+)?"

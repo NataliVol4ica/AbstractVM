@@ -12,12 +12,13 @@
 #include <stack>
 
 //todo: canonical
-//todo: think of making class static !!!!
 
 class AVMParser
 {
 public:
 	AVMParser();
+	AVMParser(const AVMParser &ref);
+	AVMParser& operator=(const AVMParser &ref);
 	~AVMParser();
 	void Parse(std::vector<std::string> program);
 	class AVMParseException : public exception
